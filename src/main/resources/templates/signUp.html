@@ -2,22 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="google-signin-client_id" content="1092855907516-8gapf3lphbjn6l85sjim73c5ag4bs05d.apps.googleusercontent.com">
   <title>Sign Up</title>
 </head>
 <body>
   <h1>Sign Up</h1>
   <div>
-    <a id="custom-login-btn" href="javascript:loginWithKakao()">
+    <a id="kakao-login-btn" href="javascript:loginWithKakao()">
       <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/>
     </a>
-    <p id="token-result"></p>
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
   </div>
+
   <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 
   <script type="text/javascript">
     (function() {
       Kakao.init('9b25753e06c7fa50fa256282f50fa9c7');
-      console.log(Kakao.isInitialized());
     })();
 
     function loginWithKakao() {
@@ -25,27 +28,19 @@
         redirectUri: 'http://www.depther.me:8080/signUp/kakao'
       })
     }
-    // 아래는 데모를 위한 UI 코드입니다.
-    displayToken()
+  </script>
 
-    function displayToken() {
-      const token = getCookie('authorize-access-token')
-      if(token) {
-        Kakao.Auth.setAccessToken(token)
-        Kakao.Auth.getStatusInfo(({ status }) => {
-          if(status === 'connected') {
-            document.getElementById('token-result').innerText = 'login success. token: ' + Kakao.Auth.getAccessToken()
-          } else {
-            Kakao.Auth.setAccessToken(null)
-          }
-        })
-      }
-    }
+  <script>
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    })
 
-    function getCookie(name) {
-      const value = "; " + document.cookie;
-      const parts = value.split("; " + name + "=");
-      if (parts.length === 2) return parts.pop().split(";").shift();
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     }
   </script>
 </body>

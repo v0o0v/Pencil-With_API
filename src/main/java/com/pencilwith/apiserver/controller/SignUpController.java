@@ -2,8 +2,10 @@ package com.pencilwith.apiserver.controller;
 
 import com.pencilwith.apiserver.model.kakao.AccessTokenApiResult;
 import com.pencilwith.apiserver.model.kakao.KakaoUserInfo;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,8 +50,8 @@ public class SignUpController {
                 .bodyToMono(KakaoUserInfo.class).block();
     }
 
-    @GetMapping("/google")
-    public void googleSignUp(String code) {
-
+    @PostMapping("/google")
+    public void signUpByGoogle(HttpServletRequest request, String code) {
+        System.out.println("aaa");
     }
 }
