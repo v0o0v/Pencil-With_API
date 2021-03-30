@@ -1,5 +1,9 @@
 package com.pencilwith.apiserver.model.entity;
 
+import com.pencilwith.apiserver.model.enums.Career;
+import com.pencilwith.apiserver.model.enums.Gender;
+import com.pencilwith.apiserver.model.enums.Location;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,11 +18,30 @@ public class Account {
     @GeneratedValue
     private Long id;
 
+    private String nickName;
+
+    private Gender gender;
+
+    private LocalDate birth;
+
+    private Location location;
+
+    private Career career;
+
+    private String introduction;
+
     public Account() {
     }
 
     @Builder
-    public Account(Long id) {
+    public Account(Long id, String nickName, Gender gender, LocalDate birth,
+            Location location, Career career, String introduction) {
         this.id = id;
+        this.nickName = nickName;
+        this.gender = gender;
+        this.birth = birth;
+        this.location = location;
+        this.career = career;
+        this.introduction = introduction;
     }
 }
