@@ -13,6 +13,10 @@ public class SignUpService {
 
     private final SignUpRepository signUpRepository;
 
+    public boolean isNickNameDuplicated(String nickName) {
+        return signUpRepository.findAccountByNickName(nickName) != null;
+    }
+
     public long signUp(SignUpRequest signUpRequest) {
         Account account = AccountMapper.requestToEntity(signUpRequest);
         Account savedAccount = signUpRepository.save(account);

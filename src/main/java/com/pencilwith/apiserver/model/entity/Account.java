@@ -20,6 +20,8 @@ public class Account {
 
     private String nickName;
 
+    private String profileImage;
+
     private Gender gender;
 
     private LocalDate birth;
@@ -34,10 +36,12 @@ public class Account {
     }
 
     @Builder
-    public Account(Long id, String nickName, Gender gender, LocalDate birth,
-            Location location, Career career, String introduction) {
+    public Account(Long id, String nickName, String profileImage,
+            Gender gender, LocalDate birth, Location location,
+            Career career, String introduction) {
         this.id = id;
         this.nickName = nickName;
+        this.profileImage = profileImage;
         this.gender = gender;
         this.birth = birth;
         this.location = location;

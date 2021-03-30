@@ -8,6 +8,7 @@ public class AccountMapper {
     public static Account requestToEntity(SignUpRequest request) {
         return Account.builder()
                 .nickName(request.getNickName())
+                .profileImage(request.getProfileImage())
                 .gender(request.getGender())
                 .birth(request.getBirth())
                 .location(request.getLocation())

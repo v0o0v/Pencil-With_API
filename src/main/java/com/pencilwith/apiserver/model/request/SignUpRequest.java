@@ -20,6 +20,8 @@ public class SignUpRequest {
     @NotBlank
     private String nickName;
 
+    private String profileImage;
+
     @NotNull
     private Gender gender;
 
