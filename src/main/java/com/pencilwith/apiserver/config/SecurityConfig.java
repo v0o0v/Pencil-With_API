@@ -9,13 +9,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 
-@Profile("release")
+@Profile("!test")
 @Configuration
 @EnableWebSecurity
-class ReleaseSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring()
+           .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .anyRequest()
+            .permitAll();
     }
 }
 
@@ -23,15 +32,23 @@ class ReleaseSecurityConfig extends WebSecurityConfigurerAdapter {
 @Configuration
 @EnableWebSecurity
 class TestSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring()
+           .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+        http.csrf()
+            .disable()
+            .authorizeRequests()
+            .anyRequest()
+            .permitAll();
+
+        http.headers()
+            .frameOptions()
+            .disable();
     }
 }

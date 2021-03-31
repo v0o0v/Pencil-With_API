@@ -8,12 +8,9 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class SignUpRequest {
 
     @Size(max = 10)
@@ -39,17 +36,6 @@ public class SignUpRequest {
     private String introduction;
 
     public SignUpRequest() {
-    }
-
-    @Builder
-    public SignUpRequest(String nickName, Gender gender, LocalDate birth,
-            Location location, Career career, String introduction) {
-        this.nickName = nickName;
-        this.gender = gender;
-        this.birth = birth;
-        this.location = location;
-        this.career = career;
-        this.introduction = introduction;
     }
 
     @Override
