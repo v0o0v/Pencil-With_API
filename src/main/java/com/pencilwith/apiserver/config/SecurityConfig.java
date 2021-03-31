@@ -36,19 +36,14 @@ class TestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+           .antMatchers("/h2-console/**", "/favicon.ico")
            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-            .disable()
-            .authorizeRequests()
+        http.authorizeRequests()
             .anyRequest()
             .permitAll();
-
-        http.headers()
-            .frameOptions()
-            .disable();
     }
 }
