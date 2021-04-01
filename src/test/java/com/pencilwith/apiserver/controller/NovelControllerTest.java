@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = PostController.class)
-public class PostControllerTest {
+public class NovelControllerTest {
     @Autowired
     MockMvc mockMvc;
 

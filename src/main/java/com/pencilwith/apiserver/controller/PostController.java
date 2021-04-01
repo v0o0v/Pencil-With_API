@@ -1,9 +1,11 @@
 package com.pencilwith.apiserver.controller;
 
-import com.pencilwith.apiserver.model.entity.Post;
+import com.pencilwith.apiserver.model.entity.Novel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,43 +17,34 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> allPosts() {
+    public List<Novel> allNovels(@AuthenticationPrincipal User user) {
         // DB 에서 데이터를 가져옴
-        List<Post> postList = new ArrayList<>();
+        List<Novel> novelList = new ArrayList<>();
 
-        return postList;
+        return novelList;
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Post findPostById(@PathVariable Long id) {
+    public Novel findNovelById(@PathVariable Long id, @AuthenticationPrincipal User user) {
         // DB 에서 데이터를 가져옴
-        Post post = new Post();
+        Novel novel = new Novel();
 
-        return post;
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Post createPost(@RequestBody Post post) {
-        // DB에 저장
-        Post newPost = post;
-
-        return newPost;
+        return novel;
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Post updatePost(@PathVariable Long id, @RequestBody Post post) {
+    public Novel updateNovel(@PathVariable Long id, @AuthenticationPrincipal User user, @RequestBody Novel novel) {
         // DB에 업데이트
-        Post updatePost = post;
+        Novel updateNovel = novel;
 
-        return updatePost;
+        return updateNovel;
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deletePost(@PathVariable Long id) {
+    public void deleteNovel(@PathVariable Long id) {
         // DB 에서 데이터 삭제
     }
 }

@@ -4,6 +4,8 @@ import com.pencilwith.apiserver.model.entity.CrewPost;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class CrewController {
 
     @PostMapping("{id}/apply")
     @ResponseStatus(HttpStatus.OK)
-    public CrewPost applyCrewPost(@PathVariable Long id) {
+    public CrewPost applyCrewPost(@PathVariable Long id, @AuthenticationPrincipal User user) {
         // 지원 프로세스 처리후, 결과 반환
         CrewPost applyCrewPost = new CrewPost();
 

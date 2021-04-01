@@ -5,6 +5,8 @@ import com.pencilwith.apiserver.model.entity.FeedPost;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class FeedbackController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<FeedPost> allFeedBacks() {
+    public List<FeedPost> allFeedBacks(@AuthenticationPrincipal User user) {
         // 피드백 및 댓글을 불러옴
         List<FeedPost> feedPostList = new ArrayList<>();
 
@@ -25,7 +27,7 @@ public class FeedbackController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FeedPost findFeedById(@PathVariable Long id) {
+    public FeedPost findFeedById(@PathVariable Long id, @AuthenticationPrincipal User user) {
         // 피드백 하나를 조회
         FeedPost feedPost = new FeedPost();
 
@@ -43,7 +45,7 @@ public class FeedbackController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FeedPost updateFeedBack(@PathVariable Long id, @RequestBody FeedPost feedPost) {
+    public FeedPost updateFeedBack(@PathVariable Long id, @RequestBody FeedPost feedPost, @AuthenticationPrincipal User user) {
         // 피드백 업데이트
         FeedPost updateFeedPost = feedPost;
 
@@ -52,7 +54,7 @@ public class FeedbackController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteFeedBacks(@PathVariable Long id) {
+    public void deleteFeedBacks(@PathVariable Long id, @AuthenticationPrincipal User user) {
         // 피드백 삭제
 
     }
