@@ -5,6 +5,7 @@ import com.pencilwith.apiserver.model.enums.Career;
 import com.pencilwith.apiserver.model.enums.Gender;
 import com.pencilwith.apiserver.model.enums.Location;
 import java.time.LocalDate;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,16 +13,24 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class Account {
+public class User {
 
     @JsonIgnore
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String username;
+
+    @JsonIgnore
+    private String password;
 
     @Column(unique = true)
     private String nickName;
@@ -41,14 +50,24 @@ public class Account {
 
     private String introduction;
 
-    public Account() {
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
+
+    public User() {
     }
 
     @Builder
-    public Account(Long id, String nickName, String profileImage,
-            Gender gender, LocalDate birth, Location location,
-            Career career, String introduction) {
+    public User(Long id, String username, String password, String nickName,
+            String profileImage, Gender gender, LocalDate birth,
+            Location location, Career career, String introduction,
+            Set<Authority> authorities) {
         this.id = id;
+        this.username = username;
+        this.password = password;
         this.nickName = nickName;
         this.profileImage = profileImage;
         this.gender = gender;
@@ -56,5 +75,6 @@ public class Account {
         this.location = location;
         this.career = career;
         this.introduction = introduction;
+        this.authorities = authorities;
     }
 }
