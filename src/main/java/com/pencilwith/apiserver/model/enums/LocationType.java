@@ -1,5 +1,5 @@
 package com.pencilwith.apiserver.model.enums;
 
-public enum Location {
+public enum LocationType {
     SEOUL, INCHEON
 }
