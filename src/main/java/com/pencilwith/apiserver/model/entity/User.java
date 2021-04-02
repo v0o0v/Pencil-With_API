@@ -1,11 +1,13 @@
 package com.pencilwith.apiserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pencilwith.apiserver.model.enums.Career;
-import com.pencilwith.apiserver.model.enums.Gender;
-import com.pencilwith.apiserver.model.enums.Location;
+import com.pencilwith.apiserver.model.enums.CareerType;
+import com.pencilwith.apiserver.model.enums.GenderType;
+import com.pencilwith.apiserver.model.enums.LocationType;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,14 +15,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 public class User {
 
     @JsonIgnore
@@ -38,43 +40,45 @@ public class User {
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private GenderType genderType;
 
     private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
-    private Location location;
+    private LocationType locationType;
 
     @Enumerated(EnumType.STRING)
-    private Career career;
+    private CareerType careerType;
 
     private String introduction;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USER_AUTHORITY",
-            joinColumns = {@JoinColumn(name = "ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_NAME", referencedColumnName = "authorityName")})
-    private Set<Authority> authorities;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserAuthorityMapping> userAuthorityMappings;
 
     public User() {
+        this.userAuthorityMappings = new HashSet<>();
     }
 
     @Builder
     public User(Long id, String username, String password, String nickName,
-            String profileImage, Gender gender, LocalDate birth,
-            Location location, Career career, String introduction,
-            Set<Authority> authorities) {
+            String profileImage, GenderType genderType, LocalDate birth,
+            LocationType locationType, CareerType careerType, String introduction,
+            Set<UserAuthorityMapping> userAuthorityMappings) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickName = nickName;
         this.profileImage = profileImage;
-        this.gender = gender;
+        this.genderType = genderType;
         this.birth = birth;
-        this.location = location;
-        this.career = career;
+        this.locationType = locationType;
+        this.careerType = careerType;
         this.introduction = introduction;
-        this.authorities = authorities;
+        this.userAuthorityMappings = userAuthorityMappings == null ? new HashSet<>() : userAuthorityMappings;
+    }
+
+    public boolean addAuthority(UserAuthorityMapping userAuthorityMapping) {
+        return this.userAuthorityMappings.add(userAuthorityMapping);
     }
 }
