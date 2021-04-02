@@ -29,13 +29,14 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String username;
 
     @JsonIgnore
     private String password;
 
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     private String profileImage;
 
@@ -61,14 +62,14 @@ public class User {
     }
 
     @Builder
-    public User(Long id, String username, String password, String nickName,
+    public User(Long id, String username, String password, String nickname,
             String profileImage, GenderType genderType, LocalDate birth,
             LocationType locationType, CareerType careerType, String introduction,
             Set<UserAuthorityMapping> userAuthorityMappings) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.profileImage = profileImage;
         this.genderType = genderType;
         this.birth = birth;

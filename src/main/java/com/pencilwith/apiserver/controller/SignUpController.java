@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.controller;
 
+import com.pencilwith.apiserver.model.dto.UserDto;
 import com.pencilwith.apiserver.model.request.SignUpRequest;
 import com.pencilwith.apiserver.service.SignUpService;
 import javax.validation.Valid;
@@ -22,12 +23,12 @@ public class SignUpController {
     private final SignUpService signUpService;
 
     @GetMapping("/nickname/duplication")
-    public ResponseEntity isNickNameDuplicated(@Size(max = 10) @NotBlank String nickName) {
-        return new ResponseEntity<>(signUpService.isNickNameDuplicated(nickName), HttpStatus.OK);
+    public ResponseEntity<Boolean> isNicknameDuplicated(@Size(max = 10) @NotBlank String nickname) {
+        return new ResponseEntity<>(signUpService.isNickNameDuplicated(nickname), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+    public ResponseEntity<UserDto> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return new ResponseEntity<>(signUpService.signUp(signUpRequest), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.service;
 
+import com.pencilwith.apiserver.model.dto.UserDto;
 import com.pencilwith.apiserver.model.entity.Authority;
 import com.pencilwith.apiserver.model.entity.User;
 import com.pencilwith.apiserver.model.entity.UserAuthorityMapping;
@@ -22,14 +23,15 @@ public class SignUpService {
 
     private final AuthorityRepository authorityRepository;
 
-    public boolean isNickNameDuplicated(String nickName) {
-        return userRepository.findUserByNickName(nickName) != null;
+    public boolean isNickNameDuplicated(String nickname) {
+        return userRepository.findUserByNickname(nickname) != null;
     }
 
-    public User signUp(SignUpRequest signUpRequest) {
+    public UserDto signUp(SignUpRequest signUpRequest) {
         User user = UserMapper.requestToEntity(signUpRequest, passwordEncoder);
 
         Authority authority = authorityRepository.findAuthorityByType(AuthorityType.ROLE_USER);
+
         UserAuthorityMapping userAuthorityMapping = UserAuthorityMapping.builder()
                 .user(user)
                 .authority(authority)
@@ -37,6 +39,8 @@ public class SignUpService {
 
         user.addAuthority(userAuthorityMapping);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        return UserMapper.entityToDto(savedUser);
     }
 }

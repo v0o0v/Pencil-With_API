@@ -22,7 +22,7 @@ public class SignUpRequest {
 
     @NotNull
     @Size(min = 3, max = 10)
-    private String nickName;
+    private String nickname;
 
     private String profileImage;
 
@@ -48,7 +48,7 @@ public class SignUpRequest {
     @Override
     public String toString() {
         return "AccountDto{" +
-                "nickName='" + nickName + '\'' +
+                "nickname='" + nickname + '\'' +
                 ", gender=" + genderType +
                 ", birth=" + birth +
                 ", location=" + locationType +

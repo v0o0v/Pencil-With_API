@@ -17,7 +17,7 @@ class SignUpControllerTest extends IntegrationTestSetup {
     @DisplayName("닉네임 중복 체크")
     void isNickNameDuplicated() throws Exception {
         mockMvc.perform(get("/api/sign-up/nickname/duplication")
-                .param("nickName", "test1"))
+                .param("nickname", "test1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(false));
     }
@@ -28,7 +28,7 @@ class SignUpControllerTest extends IntegrationTestSetup {
         JSONObject jsonObject = new JSONObject()
                 .put("username", "username1")
                 .put("password", "password")
-                .put("nickName", "test1")
+                .put("nickname", "test1")
                 .put("profileImage", "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffirpeng.tistory.com%2F103&psig=AOvVaw2eQNj_SndJ_UcO5fS-SsSk&ust=1617196831404000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDSgOmN2O8CFQAAAAAdAAAAABAD")
                 .put("genderType", "MALE")
                 .put("birth", "2021.03.30")
@@ -39,7 +39,9 @@ class SignUpControllerTest extends IntegrationTestSetup {
         mockMvc.perform(post("/api/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonObject.toString()))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("username1"))
+                .andExpect(jsonPath("$.nickname").value("test1"));
     }
 
 }
