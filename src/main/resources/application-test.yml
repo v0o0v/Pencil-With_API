@@ -22,3 +22,8 @@ logging:
   level:
     com:
       pencilwith: DEBUG
+
+jwt:
+  header: Authorization
+  secret: YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhCg==
+  token-validity-in-seconds: 86400
