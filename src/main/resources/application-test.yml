@@ -26,4 +26,4 @@ logging:
 jwt:
   header: Authorization
   secret: YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhCg==
-  token-validity-in-seconds: 86400
+  token-valid-time-in-seconds: 86400
