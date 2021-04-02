@@ -6,7 +6,7 @@ import com.pencilwith.apiserver.model.request.SignUpRequest;
 import java.util.Set;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class AccountMapper {
+public class UserMapper {
 
     public static User requestToEntity(SignUpRequest request,
                                        Set<Authority> authorities,
