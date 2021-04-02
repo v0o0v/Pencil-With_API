@@ -52,9 +52,9 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+            name = "USER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_NAME", referencedColumnName = "authorityName")})
     private Set<Authority> authorities;
 
     public User() {
