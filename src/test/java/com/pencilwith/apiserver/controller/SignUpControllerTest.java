@@ -16,8 +16,7 @@ class SignUpControllerTest extends IntegrationTestSetup {
     @Test
     @DisplayName("닉네임 중복 체크")
     void isNickNameDuplicated() throws Exception {
-        mockMvc.perform(get("/api/sign-up/nickname/duplication")
-                .param("nickname", "test1"))
+        mockMvc.perform(get("/api/sign-up/duplication/test1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(false));
     }
@@ -28,7 +27,7 @@ class SignUpControllerTest extends IntegrationTestSetup {
         JSONObject jsonObject = new JSONObject()
                 .put("username", "username1")
                 .put("password", "password")
-                .put("nickname", "test1")
+                .put("nickname", "nickname1")
                 .put("profileImage", "https://www.google.com/url?sa=i&url=https%3A%2F%2Ffirpeng.tistory.com%2F103&psig=AOvVaw2eQNj_SndJ_UcO5fS-SsSk&ust=1617196831404000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMDSgOmN2O8CFQAAAAAdAAAAABAD")
                 .put("genderType", "MALE")
                 .put("birth", "2021.03.30")

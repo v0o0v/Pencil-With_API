@@ -82,7 +82,8 @@ class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/sign-up").permitAll()
+                .antMatchers("/api/sign-up", "/api/sign-up/**").permitAll()
+                .antMatchers("/api/login", "/api/login/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
