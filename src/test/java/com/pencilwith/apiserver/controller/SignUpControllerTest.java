@@ -40,7 +40,7 @@ class SignUpControllerTest extends IntegrationTestSetup {
                 .content(jsonObject.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("username1"))
-                .andExpect(jsonPath("$.nickname").value("test1"));
+                .andExpect(jsonPath("$.nickname").value("nickname1"));
     }
 
 }
