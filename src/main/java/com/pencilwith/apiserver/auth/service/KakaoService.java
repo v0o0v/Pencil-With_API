@@ -1,16 +1,22 @@
 package com.pencilwith.apiserver.auth.service;
 
+import com.pencilwith.apiserver.auth.repository.AuthorityRepository;
+import com.pencilwith.apiserver.auth.repository.UserRepository;
+import com.pencilwith.apiserver.common.jwt.TokenProvider;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationDto;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationResultDto;
 import com.pencilwith.apiserver.common.model.dto.KakaoTokenResponseDto;
 import com.pencilwith.apiserver.common.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.common.model.entity.User;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -33,6 +39,17 @@ public class KakaoService extends AuthService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.userinfo-request-uri}")
     protected String userInfoRequestUri;
+
+    public KakaoService(
+            LinkedHashMap<String, UserInfoResponseDto> userInfoStorage,
+            TokenProvider tokenProvider,
+            AuthenticationManagerBuilder authenticationManagerBuilder,
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository,
+            AuthorityRepository authorityRepository) {
+        super(userInfoStorage, tokenProvider, authenticationManagerBuilder, passwordEncoder,
+                userRepository, authorityRepository);
+    }
 
     public AuthenticationResultDto processAuthentication(String authorizationCode) {
         String accessToken = getAccessToken(authorizationCode);

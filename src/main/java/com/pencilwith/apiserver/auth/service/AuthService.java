@@ -1,21 +1,21 @@
 package com.pencilwith.apiserver.auth.service;
 
+import com.pencilwith.apiserver.auth.repository.AuthorityRepository;
+import com.pencilwith.apiserver.auth.repository.UserRepository;
+import com.pencilwith.apiserver.common.enums.AuthorityType;
 import com.pencilwith.apiserver.common.jwt.TokenProvider;
+import com.pencilwith.apiserver.common.mapper.UserMapper;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationDto;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationResultDto;
 import com.pencilwith.apiserver.common.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.common.model.entity.Authority;
 import com.pencilwith.apiserver.common.model.entity.User;
 import com.pencilwith.apiserver.common.model.entity.UserAuthority;
-import com.pencilwith.apiserver.common.enums.AuthorityType;
-import com.pencilwith.apiserver.common.mapper.UserMapper;
 import com.pencilwith.apiserver.common.model.request.SignUpRequest;
-import com.pencilwith.apiserver.auth.repository.AuthorityRepository;
-import com.pencilwith.apiserver.auth.repository.UserRepository;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,25 +24,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    protected LinkedHashMap<String, UserInfoResponseDto> userInfoStorage;
+    protected final LinkedHashMap<String, UserInfoResponseDto> userInfoStorage;
 
-    @Autowired
-    protected TokenProvider tokenProvider;
+    protected final TokenProvider tokenProvider;
 
-    @Autowired
-    protected AuthenticationManagerBuilder authenticationManagerBuilder;
+    protected final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
+    protected final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    protected UserRepository userRepository;
+    protected final UserRepository userRepository;
 
-    @Autowired
-    protected AuthorityRepository authorityRepository;
+    protected final AuthorityRepository authorityRepository;
 
     public boolean isUsernameDuplicated(String username) {
         return userRepository.findUserByUsername(username).isPresent();
