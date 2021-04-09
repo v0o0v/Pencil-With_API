@@ -1,10 +1,12 @@
 package com.pencilwith.apiserver.model.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pencilwith.apiserver.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.model.enums.CareerType;
 import com.pencilwith.apiserver.model.enums.GenderType;
 import com.pencilwith.apiserver.model.enums.LocationType;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -13,16 +15,15 @@ import lombok.Getter;
 public class SignUpRequest {
 
     @NotNull
-    @Size(min = 5, max = 20)
-    private String username;
+    private String authorizationCode;
 
-    @NotNull
-    @Size(min = 8, max = 20)
-    private String password;
+    private String id;
 
     @NotNull
     @Size(min = 3, max = 10)
-    private String nickname;
+    private String username;
+
+    private String password;
 
     private String profileImage;
 
@@ -45,15 +46,15 @@ public class SignUpRequest {
     public SignUpRequest() {
     }
 
-    @Override
-    public String toString() {
-        return "AccountDto{" +
-                "nickname='" + nickname + '\'' +
-                ", gender=" + genderType +
-                ", birth=" + birth +
-                ", location=" + locationType +
-                ", career=" + careerType +
-                ", introduction='" + introduction + '\'' +
-                '}';
+    public void findIdPassword(LinkedHashMap<String, UserInfoResponseDto> userInfoStorage) {
+        UserInfoResponseDto dto = userInfoStorage.get(this.authorizationCode);
+        if (dto == null) {
+            throw new IllegalArgumentException();
+        }
+
+        this.id = dto.getLoginType() + dto.getUserId();
+        this.password = dto.getUserId();
+
+        userInfoStorage.remove(this.authorizationCode);
     }
 }

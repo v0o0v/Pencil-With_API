@@ -10,5 +10,4 @@ public class ApiserverApplication {
         SpringApplication.run(ApiserverApplication.class, args);
     }
 
-
 }

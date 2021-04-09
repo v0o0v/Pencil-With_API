@@ -11,8 +11,23 @@ spring:
     hibernate:
       ddl-auto: create
     properties:
-      hibernate.format_sql: true
-      show_sql: true
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1092855907516-8gapf3lphbjn6l85sjim73c5ag4bs05d.apps.googleusercontent.com
+            client-secret: kQVe2nwOYLv3U3j3pJ2yWNnB
+          kakao:
+            client-id: 82ddbdc04c6345a022a4c83973202bd8
+            client-secret: EXe6U0mMuuWbLU3REyWpqbu4xGxlW7iS
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            token-request-uri: https://kauth.kakao.com/oauth/token
+            userinfo-request-uri: https://kapi.kakao.com/v2/user/me
 
   h2:
     console:
@@ -26,5 +41,5 @@ logging:
 
 jwt:
   header: Authorization
-  secret: YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhCg==
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   token-valid-time-in-seconds: 86400

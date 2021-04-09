@@ -12,8 +12,6 @@ public class UserDto {
 
     private String username;
 
-    private String nickname;
-
     private String profileImage;
 
     private GenderType genderType;
@@ -30,11 +28,10 @@ public class UserDto {
     }
 
     @Builder
-    public UserDto(String username, String nickname, String profileImage,
+    public UserDto(String username, String profileImage,
             GenderType genderType, LocalDate birth,
             LocationType locationType, CareerType careerType, String introduction) {
         this.username = username;
-        this.nickname = nickname;
         this.profileImage = profileImage;
         this.genderType = genderType;
         this.birth = birth;

@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{username}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
         return new ResponseEntity<>(userService.getUserInfo(username), HttpStatus.OK);
     }

@@ -21,10 +21,12 @@ public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        return userRepository.findUserByUsername(username)
+    public UserDetails loadUserByUsername(String userId) {
+        org.springframework.security.core.userdetails.User user1 = userRepository.findById(userId)
                 .map(user -> createUser(user))
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(userId + " -> 데이터베이스에서 찾을 수 없습니다."));
+        return user1;
     }
 
     private org.springframework.security.core.userdetails.User createUser(User user) {
@@ -32,6 +34,6 @@ public class CustomUserDetailService implements UserDetailsService {
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getType().toString()))
                 .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), grantedAuthorities);
     }
 }

@@ -10,9 +10,9 @@ public class UserMapper {
     public static User requestToEntity(SignUpRequest request,
                                        PasswordEncoder passwordEncoder) {
         return User.builder()
+                .id(request.getId())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .nickname(request.getNickname())
                 .profileImage(request.getProfileImage())
                 .genderType(request.getGenderType())
                 .birth(request.getBirth())
@@ -25,7 +25,6 @@ public class UserMapper {
     public static UserDto entityToDto(User user) {
         return UserDto.builder()
                 .username(user.getUsername())
-                .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
                 .genderType(user.getGenderType())
                 .birth(user.getBirth())
