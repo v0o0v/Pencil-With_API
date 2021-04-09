@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -43,7 +44,6 @@ public class AuthService {
         return userRepository.findUserByUsername(username).isPresent();
     }
 
-    @Transactional
     public AuthenticationDto signUp(SignUpRequest request) {
         request.findIdPassword(userInfoStorage);
 
