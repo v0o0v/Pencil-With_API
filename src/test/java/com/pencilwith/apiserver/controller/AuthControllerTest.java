@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 
 class AuthControllerTest extends IntegrationTestSetup {
 
+    // 통합 테스트 실행 시 AUTHORIZATION_CODE 매번 변경 필요함
     private static final String AUTHORIZATION_CODE = "6AaSfq-DvnvivSuMdeUAh7KwZ2bLjs21Fnl-r9CjJGGJo5xsZftwKdrp8PzIs_f1nybkPgopb1QAAAF4sovQ1w";
 
     @Test
