@@ -2,6 +2,7 @@ package com.pencilwith.apiserver.auth.service;
 
 import com.pencilwith.apiserver.auth.repository.AuthorityRepository;
 import com.pencilwith.apiserver.auth.repository.UserRepository;
+import com.pencilwith.apiserver.common.enums.LoginType;
 import com.pencilwith.apiserver.common.jwt.TokenProvider;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationDto;
 import com.pencilwith.apiserver.common.model.dto.AuthenticationResultDto;
@@ -10,6 +11,7 @@ import com.pencilwith.apiserver.common.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.common.model.entity.User;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Transactional
 public class KakaoService extends AuthService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -40,20 +43,18 @@ public class KakaoService extends AuthService {
     @Value("${spring.security.oauth2.client.registration.kakao.userinfo-request-uri}")
     protected String userInfoRequestUri;
 
-    public KakaoService(
-            LinkedHashMap<String, UserInfoResponseDto> userInfoStorage,
-            TokenProvider tokenProvider,
-            AuthenticationManagerBuilder authenticationManagerBuilder,
-            PasswordEncoder passwordEncoder,
-            UserRepository userRepository,
-            AuthorityRepository authorityRepository) {
-        super(userInfoStorage, tokenProvider, authenticationManagerBuilder, passwordEncoder,
-                userRepository, authorityRepository);
+    public KakaoService(LinkedHashMap<String, UserInfoResponseDto> userInfoStorage,
+                        TokenProvider tokenProvider,
+                        AuthenticationManagerBuilder authenticationManagerBuilder,
+                        PasswordEncoder passwordEncoder,
+                        UserRepository userRepository,
+                        AuthorityRepository authorityRepository) {
+        super(userInfoStorage, tokenProvider, authenticationManagerBuilder, passwordEncoder, userRepository, authorityRepository);
     }
 
     public AuthenticationResultDto processAuthentication(String authorizationCode) {
         String accessToken = getAccessToken(authorizationCode);
-        UserInfoResponseDto userInfo = getUserInfo(accessToken, "kakao");
+        UserInfoResponseDto userInfo = getUserInfo(accessToken, LoginType.KAKAO);
         Optional<User> optionalUser = isUserRegistered(userInfo.getLoginType() + userInfo.getUserId());
 
         if (optionalUser.isEmpty()) {
@@ -81,12 +82,12 @@ public class KakaoService extends AuthService {
 
         HttpEntity<MultiValueMap<String, String>> requestParams = new HttpEntity<>(map, headers);
 
-        KakaoTokenResponseDto responseDto = restTemplate
-                .postForObject(tokenRequestUri, requestParams, KakaoTokenResponseDto.class);
+        KakaoTokenResponseDto responseDto = restTemplate.postForObject(tokenRequestUri, requestParams, KakaoTokenResponseDto.class);
+
         return responseDto.getAccess_token();
     }
 
-    public UserInfoResponseDto getUserInfo(String accessToken, String loginType) {
+    private UserInfoResponseDto getUserInfo(String accessToken, LoginType loginType) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -94,9 +95,9 @@ public class KakaoService extends AuthService {
 
         HttpEntity entity = new HttpEntity(headers);
 
-        UserInfoResponseDto responseDto = restTemplate.exchange(userInfoRequestUri, HttpMethod.GET, entity, UserInfoResponseDto.class).getBody();
-        responseDto.setLoginType(loginType);
+        UserInfoResponseDto userInfo = restTemplate.exchange(userInfoRequestUri, HttpMethod.GET, entity, UserInfoResponseDto.class).getBody();
+        userInfo.setLoginType(loginType.getType());
 
-        return responseDto;
+        return userInfo;
     }
 }
