@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/google/authentication")
-    public ResponseEntity<AuthenticationResultDto> processGoogleAuthentication(@RequestBody @NotEmpty String authorizationCode) {
-        return new ResponseEntity<>(googleService.processAuthentication(authorizationCode), HttpStatus.OK);
+    public ResponseEntity<AuthenticationResultDto> processGoogleAuthentication(@RequestBody @NotEmpty String accessToken) {
+        return new ResponseEntity<>(googleService.processAuthentication(accessToken), HttpStatus.OK);
     }
 }

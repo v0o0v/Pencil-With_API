@@ -20,8 +20,7 @@ spring:
       client:
         registration:
           google:
-            client-id: 1092855907516-8gapf3lphbjn6l85sjim73c5ag4bs05d.apps.googleusercontent.com
-            client-secret: kQVe2nwOYLv3U3j3pJ2yWNnB
+            userinfo-request-uri: https://openidconnect.googleapis.com/v1/userinfo
           kakao:
             client-id: 82ddbdc04c6345a022a4c83973202bd8
             client-secret: EXe6U0mMuuWbLU3REyWpqbu4xGxlW7iS
