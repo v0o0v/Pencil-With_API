@@ -4,19 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pencilwith.apiserver.common.enums.CareerType;
 import com.pencilwith.apiserver.common.enums.GenderType;
 import com.pencilwith.apiserver.common.enums.LocationType;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,9 +21,10 @@ public class User {
 
     @JsonIgnore
     @Id
+    @Column(length = 100)
     private String id;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 100)
     private String username;
 
     @JsonIgnore
@@ -51,6 +48,8 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserAuthority> userAuthorities;
+
+
 
     public User() {
         this.userAuthorities = new HashSet<>();
@@ -76,4 +75,10 @@ public class User {
     public boolean addAuthority(UserAuthority userAuthority) {
         return this.userAuthorities.add(userAuthority);
     }
+
+    @OneToMany(mappedBy = "owner")
+    private List<Project> ownerProjectList;
+
+    @ManyToMany(mappedBy = "crewList")
+    private List<Project> project;
 }
