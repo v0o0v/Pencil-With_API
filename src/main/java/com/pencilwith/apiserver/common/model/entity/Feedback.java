@@ -1,5 +1,7 @@
 package com.pencilwith.apiserver.common.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Feedback {
 
     @ManyToOne
     @JoinColumn
+    @JsonBackReference
     private Project project;
 
     private LocalDateTime createdAt;
@@ -36,6 +39,7 @@ public class Feedback {
     private String content;
 
     @OneToMany(mappedBy = "feedback")
+    @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
 
 }

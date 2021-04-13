@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.common.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Chapter {
 
     @ManyToOne
     @JoinColumn
+    @JsonBackReference
     private Project project;
 
     @Lob
