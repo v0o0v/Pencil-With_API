@@ -1,7 +1,7 @@
 package com.pencilwith.apiserver.start.auth.service;
 
-import com.pencilwith.apiserver.start.auth.repository.AuthorityRepository;
-import com.pencilwith.apiserver.start.auth.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.AuthorityRepository;
+import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.start.common.enums.LoginType;
 import com.pencilwith.apiserver.start.common.jwt.TokenProvider;
 import com.pencilwith.apiserver.start.common.model.dto.AuthenticationDto;

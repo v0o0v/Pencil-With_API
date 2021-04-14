@@ -1,4 +1,4 @@
-package com.pencilwith.apiserver.start.auth.repository;
+package com.pencilwith.apiserver.domain.repository;
 
 import com.pencilwith.apiserver.domain.entity.User;
 import java.util.Optional;

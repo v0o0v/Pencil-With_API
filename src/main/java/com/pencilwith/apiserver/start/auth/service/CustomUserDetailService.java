@@ -1,7 +1,7 @@
 package com.pencilwith.apiserver.start.auth.service;
 
 import com.pencilwith.apiserver.domain.entity.User;
-import com.pencilwith.apiserver.start.auth.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 

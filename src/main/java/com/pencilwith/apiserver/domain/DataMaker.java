@@ -1,6 +1,6 @@
 package com.pencilwith.apiserver.domain;
 
-import com.pencilwith.apiserver.start.auth.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
