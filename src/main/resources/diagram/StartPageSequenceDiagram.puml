@@ -1,11 +1,60 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-autonumber
+actor App
+actor Server
+actor Kakao
+actor Google
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+group 카카오 로그인
+  App -> Kakao : authorizationCode 요청
+  return : authorizationCode 반환
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+  App -> Server : POST \n /api/auth/kakao/authentication(String authorizationCode)
+
+  Server -> Kakao : Access Token 요청
+  return : Access Token 반환
+
+  Server -> Kakao : 사용자 정보 요청
+  return : 사용자 정보 반환
+
+  Server -> Server : 사용자 가입 유무 확인
+
+  alt 신규 유저인 경우
+    Server --> App : isRegistered:false, authorizationCode 반환
+    App -> App : 사용자 약관 동의 및 회원 가입 정보 입력
+    App -> Server : POST \n /api/auth/sign-up(SignUpRequest request)
+    Server --> App : isRegistered:true, JWT 토큰 반환
+    App -> Server : 이후 반환 받은 JWT 토큰을 HTTP Header Authorization 필드에 넣어서 API 요청
+  end
+
+  alt 이미 가입한 유저인 경우
+    Server --> App : isRegistered:true, JWT 토큰 반환
+    App -> Server : 이후 반환 받은 JWT 토큰을 HTTP Header Authorization 필드에 넣어서 API 요청
+  end
+end
+
+group 구글 로그인
+  App -> Google : accessToken 요청
+  return : accessToken 반환
+
+  App -> Server : POST \n /api/auth/google/authentication(String accessToken)
+
+  Server -> Google : 사용자 정보 요청
+  return : 사용자 정보 반환
+
+  Server -> Server : 사용자 가입 유무 확인
+
+  alt 신규 유저인 경우
+    Server --> App : isRegistered:false, authorizationCode 반환
+    App -> App : 사용자 약관 동의 및 회원 가입 정보 입력
+    App -> Server : POST \n /api/auth/sign-up(SignUpRequest request)
+    Server --> App : isRegistered:true, JWT 토큰 반환
+    App -> Server : 이후 반환 받은 JWT 토큰을 HTTP Header Authorization 필드에 넣어서 API 요청
+  end
+
+  alt 이미 가입한 유저인 경우
+    Server --> App : isRegistered:true, JWT 토큰 반환
+    App -> Server : 이후 반환 받은 JWT 토큰을 HTTP Header Authorization 필드에 넣어서 API 요청
+  end
+end
 @enduml
