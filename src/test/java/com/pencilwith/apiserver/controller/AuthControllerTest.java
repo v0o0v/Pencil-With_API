@@ -9,6 +9,7 @@ import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.pencilwith.apiserver.IntegrationTestSetup;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.annotation.Order;
@@ -36,7 +37,7 @@ class AuthControllerTest extends IntegrationTestSetup {
     @Test
     @Order(2)
     @DisplayName("카카오 회원가입 및 로그인")
-//    @Disabled
+    @Disabled
     void processKakaoAuthentication_processSignUp_processKakaoAuthentication() throws Exception {
         // 카카오 회원 인증 요청
         mockMvc.perform(post("/api/auth/kakao/authentication")
@@ -91,7 +92,7 @@ class AuthControllerTest extends IntegrationTestSetup {
     @Test
     @Order(2)
     @DisplayName("구글 회원가입 및 로그인")
-//    @Disabled
+    @Disabled
     void processGoogleAuthentication_processSignUp() throws Exception {
         // 구글 회원 인증 요청
         mockMvc.perform(post("/api/auth/google/authentication")

@@ -35,9 +35,7 @@ public class Authority {
     }
 
     @Builder
-    public Authority(Long id,
-                     AuthorityType type,
-                     Set<UserAuthority> userAuthorities) {
+    public Authority(Long id, AuthorityType type, Set<UserAuthority> userAuthorities) {
         this.id = id;
         this.type = type;
         this.userAuthorities = userAuthorities;
