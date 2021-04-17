@@ -17,7 +17,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
-public abstract class IntegrationTestSetup {
+public abstract class IntegrationTestSetup extends DbUnitTestSetup {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
