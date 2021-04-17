@@ -60,14 +60,14 @@ public class AuthService {
         request.findIdPassword(userInfoStorage);
 
         User user = UserMapper.requestToEntity(request, passwordEncoder);
-        UserAuthority userAuthority = getUserAuthorityMapping(user);
+        UserAuthority userAuthority = getUserAuthority(user);
         user.addAuthority(userAuthority);
         User savedUser = userRepository.save(user);
 
         return new AuthenticationDto(request.getId(), request.getPassword());
     }
 
-    private UserAuthority getUserAuthorityMapping(User user) {
+    private UserAuthority getUserAuthority(User user) {
         Authority authority = authorityRepository.findAuthorityByType(AuthorityType.ROLE_USER);
 
         UserAuthority userAuthority = UserAuthority.builder()

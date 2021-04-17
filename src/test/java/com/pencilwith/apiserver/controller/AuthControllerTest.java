@@ -9,8 +9,10 @@ import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.pencilwith.apiserver.IntegrationTestSetup;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 
 @DatabaseSetup(value = {
@@ -19,9 +21,10 @@ import org.springframework.http.MediaType;
 class AuthControllerTest extends IntegrationTestSetup {
 
     // TODO: 통합 테스트 실행 시 ACCESS_TOKEN 자동으로 얻어오도록 개선
-    private static final String ACCESS_TOKEN = "XkYdhwcvPhlRKEbrqxNwfk2BSF8EOZlk5kwq3gorDNMAAAF43ydSIQ";
+    private static final String ACCESS_TOKEN = "ya29.a0AfH6SMAhpfYbdf3EAEyzo_7xf3cwzJYa48hl8lep5Haj5-uzGcdqfn-HnQPNLeYcSpPPLXxk2mW153dk3gYQZLdUfTz3iadIqdUMzJZ-6heqxjQtNl4ecZYFSOPWWw-NpvCuBqKDOWsstZB6YBrC5bo_rauACQ";
 
     @Test
+    @Order(1)
     @DisplayName("닉네임 중복 체크")
     void isNickNameDuplicated() throws Exception {
         mockMvc.perform(get("/api/auth/duplication/test2"))
@@ -32,13 +35,20 @@ class AuthControllerTest extends IntegrationTestSetup {
     }
 
     @Test
-    @DisplayName("카카오 회원가입")
-    void processKakaoAuthentication_processSignUp() throws Exception {
+    @Order(2)
+    @DisplayName("카카오 회원가입 및 로그인")
+    @Disabled
+    void processKakaoAuthentication_processSignUp_processKakaoAuthentication() throws Exception {
         // 카카오 회원 인증 요청
         mockMvc.perform(post("/api/auth/kakao/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(ACCESS_TOKEN))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(false))
+                .andExpect(jsonPath("$.body.accessToken").value(ACCESS_TOKEN))
+                .andExpect(jsonPath("$.body.token").doesNotExist());
 
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
@@ -55,17 +65,40 @@ class AuthControllerTest extends IntegrationTestSetup {
         mockMvc.perform(post("/api/auth/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonObject.toString()))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(true))
+                .andExpect(jsonPath("$.body.accessToken").doesNotExist())
+                .andExpect(jsonPath("$.body.token").exists());
+
+        // 카카오 로그인
+        mockMvc.perform(post("/api/auth/kakao/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ACCESS_TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(true))
+                .andExpect(jsonPath("$.body.accessToken").doesNotExist())
+                .andExpect(jsonPath("$.body.token").exists());
     }
 
     @Test
-    @DisplayName("구글 회원가입")
+    @Order(2)
+    @DisplayName("구글 회원가입 및 로그인")
+//    @Disabled
     void processGoogleAuthentication_processSignUp() throws Exception {
         // 구글 회원 인증 요청
         mockMvc.perform(post("/api/auth/google/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(ACCESS_TOKEN))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(false))
+                .andExpect(jsonPath("$.body.accessToken").value(ACCESS_TOKEN))
+                .andExpect(jsonPath("$.body.token").doesNotExist());
 
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
@@ -82,6 +115,22 @@ class AuthControllerTest extends IntegrationTestSetup {
         mockMvc.perform(post("/api/auth/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonObject.toString()))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(true))
+                .andExpect(jsonPath("$.body.accessToken").doesNotExist())
+                .andExpect(jsonPath("$.body.token").exists());
+
+        // 구글 로그인
+        mockMvc.perform(post("/api/auth/google/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ACCESS_TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body.registered").value(true))
+                .andExpect(jsonPath("$.body.accessToken").doesNotExist())
+                .andExpect(jsonPath("$.body.token").exists());
     }
 }
