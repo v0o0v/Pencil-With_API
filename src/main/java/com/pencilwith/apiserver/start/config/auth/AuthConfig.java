@@ -1,6 +1,6 @@
 package com.pencilwith.apiserver.start.config.auth;
 
-import com.pencilwith.apiserver.start.common.model.dto.UserInfoResponseDto;
+import com.pencilwith.apiserver.start.model.dto.UserInfoResponseDto;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -1,8 +1,8 @@
 package com.pencilwith.apiserver.start.config.security;
 
-import com.pencilwith.apiserver.start.common.jwt.JwtAccessDeniedHandler;
-import com.pencilwith.apiserver.start.common.jwt.JwtAuthenticationEntryPoint;
-import com.pencilwith.apiserver.start.common.jwt.TokenProvider;
+import com.pencilwith.apiserver.start.config.jwt.JwtAccessDeniedHandler;
+import com.pencilwith.apiserver.start.config.jwt.JwtAuthenticationEntryPoint;
+import com.pencilwith.apiserver.start.config.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

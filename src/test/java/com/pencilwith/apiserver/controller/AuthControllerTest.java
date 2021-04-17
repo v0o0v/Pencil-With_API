@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 
 class AuthControllerTest extends IntegrationTestSetup {
 
-    // 통합 테스트 실행 시 AUTHORIZATION_CODE 매번 변경 필요함
-    private static final String AUTHORIZATION_CODE = "6AaSfq-DvnvivSuMdeUAh7KwZ2bLjs21Fnl-r9CjJGGJo5xsZftwKdrp8PzIs_f1nybkPgopb1QAAAF4sovQ1w";
+    // TODO: 통합 테스트 실행 시 ACCESS_TOKEN 자동으로 얻어오도록 개선
+    private static final String ACCESS_TOKEN = "ya29.a0AfH6SMCs1S1hnTYozJ2yRgXvAj52JVQhp_XKi9Un9ApZrNiQdgfUoabUIpFCTQaiP0p36y2X30hhbWXk2b2wvUlSHGy-veLgt4fDkngfXQU74solK49OnFIJwvvLHrGzlWJv91sH5G8Oc-L7CDNW1nC2ydkTmQ";
 
     @Test
     @Order(1)
@@ -29,11 +29,18 @@ class AuthControllerTest extends IntegrationTestSetup {
     }
 
     @Test
-    @Order(3)
-    @DisplayName("회원가입")
-    void processSignUp() throws Exception {
+    @Order(2)
+    @DisplayName("카카오 회원가입")
+    void processKakaoAuthentication_processSignUp() throws Exception {
+        // 카카오 회원 인증 요청
+        mockMvc.perform(post("/api/auth/kakao/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ACCESS_TOKEN))
+                .andExpect(status().isOk());
+
+        // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
-                .put("authorizationCode", AUTHORIZATION_CODE)
+                .put("accessToken", ACCESS_TOKEN)
                 .put("username", "username1")
                 .put("profileImage", "profile 이미지 URI")
                 .put("genderType", "FEMALE")
@@ -42,6 +49,7 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .put("careerType", "INTERMEDIATE")
                 .put("introduction", "자기소개입니다.");
 
+        // 회원가입 요청
         mockMvc.perform(post("/api/auth/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonObject.toString()))
@@ -49,12 +57,30 @@ class AuthControllerTest extends IntegrationTestSetup {
     }
 
     @Test
-    @Order(2)
-    @DisplayName("카카오 인증")
-    void processKakaoAuthentication() throws Exception {
-        mockMvc.perform(post("/api/auth/kakao/authentication")
+    @Order(3)
+    @DisplayName("구글 회원가입")
+    void processGoogleAuthentication_processSignUp() throws Exception {
+        // 구글 회원 인증 요청
+        mockMvc.perform(post("/api/auth/google/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(AUTHORIZATION_CODE))
+                .content(ACCESS_TOKEN))
+                .andExpect(status().isOk());
+
+        // 회원가입 요청 파라미터
+        JSONObject jsonObject = new JSONObject()
+                .put("accessToken", ACCESS_TOKEN)
+                .put("username", "username1")
+                .put("profileImage", "profile 이미지 URI")
+                .put("genderType", "FEMALE")
+                .put("birth", "2000.01.01")
+                .put("locationType", "INCHEON")
+                .put("careerType", "INTERMEDIATE")
+                .put("introduction", "자기소개입니다.");
+
+        // 회원가입 요청
+        mockMvc.perform(post("/api/auth/sign-up")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonObject.toString()))
                 .andExpect(status().isOk());
     }
 }
