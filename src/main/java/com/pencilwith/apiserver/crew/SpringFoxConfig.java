@@ -24,7 +24,7 @@ public class SpringFoxConfig {
                 .produces(getProduceContentTypes())
                 .apiInfo(getApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.pencilwith.apiserver.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.pencilwith.apiserver"))
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
