@@ -24,11 +24,11 @@ public class User {
     @Column(length = 100)
     private String id;
 
-    @Column(unique = true, length = 100)
-    private String username;
-
     @JsonIgnore
     private String password;
+
+    @Column(unique = true, length = 100)
+    private String username;
 
     private String profileImage;
 
@@ -48,8 +48,6 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserAuthority> userAuthorities;
-
-
 
     public User() {
         this.userAuthorities = new HashSet<>();

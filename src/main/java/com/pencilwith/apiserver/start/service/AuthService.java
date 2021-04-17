@@ -2,8 +2,10 @@ package com.pencilwith.apiserver.start.service;
 
 import com.pencilwith.apiserver.domain.entity.Authority;
 import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.entity.UserAgreement;
 import com.pencilwith.apiserver.domain.entity.UserAuthority;
 import com.pencilwith.apiserver.domain.repository.AuthorityRepository;
+import com.pencilwith.apiserver.domain.repository.UserAgreementRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.start.config.jwt.TokenProvider;
 import com.pencilwith.apiserver.start.model.dto.AuthenticationDto;
@@ -34,17 +36,19 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AuthService {
 
-    protected final LinkedHashMap<String, UserInfoResponseDto> userInfoStorage;
+    private final LinkedHashMap<String, UserInfoResponseDto> userInfoStorage;
 
-    protected final TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
-    protected final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    protected final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    protected final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    protected final AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
+
+    private final UserAgreementRepository userAgreementRepository;
 
     @Value("${spring.security.oauth2.client.registration.google.userinfo-endpoint}")
     protected String googleUserInfoEndpoint;
@@ -62,7 +66,7 @@ public class AuthService {
         User user = UserMapper.requestToEntity(request, passwordEncoder);
         UserAuthority userAuthority = getUserAuthority(user);
         user.addAuthority(userAuthority);
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
         return new AuthenticationDto(request.getId(), request.getPassword());
     }
@@ -91,7 +95,7 @@ public class AuthService {
 
         return AuthenticationResultDto.builder()
                 .isRegistered(true)
-                .token("Bearer " + jwtToken)
+                .jwtToken("Bearer " + jwtToken)
                 .build();
     }
 
@@ -100,15 +104,24 @@ public class AuthService {
         Optional<User> optionalUser = isUserRegistered(userInfo.getLoginType() + userInfo.getUserId());
 
         if (optionalUser.isEmpty()) {
-            userInfoStorage.put(accessToken, userInfo);
-            return AuthenticationResultDto.builder()
-                    .isRegistered(false)
-                    .accessToken(accessToken)
-                    // TODO: 프로필 이미지 URI 정보 추가 전달 필요
-                    .build();
+            return preProcessForSignUp(accessToken, userInfo);
         }
 
         return makeJwtToken(new AuthenticationDto(userInfo.getLoginType() + userInfo.getUserId(), userInfo.getUserId()));
+    }
+
+    private AuthenticationResultDto preProcessForSignUp(String accessToken, UserInfoResponseDto userInfo) {
+        // 회원가입 요청 시 accessToken을 다시 받아서 정상적인 요청인지를 검증하기 위해 임시로 accessToken 저장
+        userInfoStorage.put(accessToken, userInfo);
+
+        UserAgreement latestUserAgreement = userAgreementRepository.findFirstByOrderByIdDesc();
+
+        return AuthenticationResultDto.builder()
+                .isRegistered(false)
+                .accessToken(accessToken)
+                .userAgreement(latestUserAgreement)
+                // TODO: 프로필 이미지 URI 정보 추가 전달 필요
+                .build();
     }
 
     private UserInfoResponseDto getUserInfo(String accessToken, LoginType loginType) {

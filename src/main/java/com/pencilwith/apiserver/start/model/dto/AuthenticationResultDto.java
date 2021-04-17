@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.start.model.dto;
 
+import com.pencilwith.apiserver.domain.entity.UserAgreement;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,16 +11,18 @@ public class AuthenticationResultDto {
 
     private String accessToken;
 
-    private String token;
+    private UserAgreement userAgreement;
+
+    private String jwtToken;
 
     public AuthenticationResultDto() {
     }
 
     @Builder
-    public AuthenticationResultDto(boolean isRegistered, String accessToken,
-            String token) {
+    public AuthenticationResultDto(boolean isRegistered, String accessToken, UserAgreement userAgreement, String jwtToken) {
         this.isRegistered = isRegistered;
         this.accessToken = accessToken;
-        this.token = token;
+        this.userAgreement = userAgreement;
+        this.jwtToken = jwtToken;
     }
 }

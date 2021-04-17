@@ -9,7 +9,6 @@ import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.pencilwith.apiserver.IntegrationTestSetup;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.annotation.Order;
@@ -21,7 +20,7 @@ import org.springframework.http.MediaType;
 class AuthControllerTest extends IntegrationTestSetup {
 
     // TODO: 통합 테스트 실행 시 ACCESS_TOKEN 자동으로 얻어오도록 개선
-    private static final String ACCESS_TOKEN = "ya29.a0AfH6SMAhpfYbdf3EAEyzo_7xf3cwzJYa48hl8lep5Haj5-uzGcdqfn-HnQPNLeYcSpPPLXxk2mW153dk3gYQZLdUfTz3iadIqdUMzJZ-6heqxjQtNl4ecZYFSOPWWw-NpvCuBqKDOWsstZB6YBrC5bo_rauACQ";
+    private static final String ACCESS_TOKEN = "XgNGp1zSVjmSYweJhGUIdgE16tcElq1xLV2hcwo9dZwAAAF44BCLsg";
 
     @Test
     @Order(1)
@@ -37,7 +36,7 @@ class AuthControllerTest extends IntegrationTestSetup {
     @Test
     @Order(2)
     @DisplayName("카카오 회원가입 및 로그인")
-    @Disabled
+//    @Disabled
     void processKakaoAuthentication_processSignUp_processKakaoAuthentication() throws Exception {
         // 카카오 회원 인증 요청
         mockMvc.perform(post("/api/auth/kakao/authentication")
@@ -48,7 +47,9 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(false))
                 .andExpect(jsonPath("$.body.accessToken").value(ACCESS_TOKEN))
-                .andExpect(jsonPath("$.body.token").doesNotExist());
+                .andExpect(jsonPath("$.body.jwtToken").doesNotExist())
+                .andExpect(jsonPath("$.body.userAgreement").exists())
+                .andExpect(jsonPath("$.body.userAgreement.id").value(2));
 
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
@@ -70,7 +71,9 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(true))
                 .andExpect(jsonPath("$.body.accessToken").doesNotExist())
-                .andExpect(jsonPath("$.body.token").exists());
+                .andExpect(jsonPath("$.body.jwtToken").exists())
+                .andExpect(jsonPath("$.body.userAgreement").doesNotExist());
+
 
         // 카카오 로그인
         mockMvc.perform(post("/api/auth/kakao/authentication")
@@ -81,7 +84,8 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(true))
                 .andExpect(jsonPath("$.body.accessToken").doesNotExist())
-                .andExpect(jsonPath("$.body.token").exists());
+                .andExpect(jsonPath("$.body.jwtToken").exists())
+                .andExpect(jsonPath("$.body.userAgreement").doesNotExist());
     }
 
     @Test
@@ -98,7 +102,9 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(false))
                 .andExpect(jsonPath("$.body.accessToken").value(ACCESS_TOKEN))
-                .andExpect(jsonPath("$.body.token").doesNotExist());
+                .andExpect(jsonPath("$.body.jwtToken").doesNotExist())
+                .andExpect(jsonPath("$.body.userAgreement").exists())
+                .andExpect(jsonPath("$.body.userAgreement.id").value(2));
 
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
@@ -120,7 +126,8 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(true))
                 .andExpect(jsonPath("$.body.accessToken").doesNotExist())
-                .andExpect(jsonPath("$.body.token").exists());
+                .andExpect(jsonPath("$.body.jwtToken").exists())
+                .andExpect(jsonPath("$.body.userAgreement").doesNotExist());
 
         // 구글 로그인
         mockMvc.perform(post("/api/auth/google/authentication")
@@ -131,6 +138,7 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .andExpect(jsonPath("$.header.reason").value("success"))
                 .andExpect(jsonPath("$.body.registered").value(true))
                 .andExpect(jsonPath("$.body.accessToken").doesNotExist())
-                .andExpect(jsonPath("$.body.token").exists());
+                .andExpect(jsonPath("$.body.jwtToken").exists())
+                .andExpect(jsonPath("$.body.userAgreement").doesNotExist());
     }
 }

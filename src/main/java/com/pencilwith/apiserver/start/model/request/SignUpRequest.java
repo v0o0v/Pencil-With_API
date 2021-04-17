@@ -20,11 +20,11 @@ public class SignUpRequest {
 
     private String id;
 
+    private String password;
+
     @NotNull
     @Size(min = 3, max = 10)
     private String username;
-
-    private String password;
 
     private String profileImage;
 
