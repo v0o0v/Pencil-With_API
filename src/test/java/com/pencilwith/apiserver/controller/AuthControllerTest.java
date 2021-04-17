@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.pencilwith.apiserver.IntegrationTestSetup;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 
 class AuthControllerTest extends IntegrationTestSetup {
@@ -23,7 +23,9 @@ class AuthControllerTest extends IntegrationTestSetup {
     void isNickNameDuplicated() throws Exception {
         mockMvc.perform(get("/api/auth/duplication/test1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(false));
+                .andExpect(jsonPath("$.header.code").value(200))
+                .andExpect(jsonPath("$.header.reason").value("success"))
+                .andExpect(jsonPath("$.body").value(false));
     }
 
     @Test

@@ -1,15 +1,16 @@
 package com.pencilwith.apiserver.start.auth.controller;
 
-import com.pencilwith.apiserver.start.common.model.dto.AuthenticationDto;
-import com.pencilwith.apiserver.start.common.model.dto.AuthenticationResultDto;
-import com.pencilwith.apiserver.start.common.model.request.SignUpRequest;
+import com.pencilwith.apiserver.start.ApiResponse;
+import com.pencilwith.apiserver.start.Header;
 import com.pencilwith.apiserver.start.auth.service.AuthService;
 import com.pencilwith.apiserver.start.auth.service.GoogleService;
 import com.pencilwith.apiserver.start.auth.service.KakaoService;
+import com.pencilwith.apiserver.start.common.model.dto.AuthenticationDto;
+import com.pencilwith.apiserver.start.common.model.dto.AuthenticationResultDto;
+import com.pencilwith.apiserver.start.common.model.request.SignUpRequest;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class AuthController {
     private final GoogleService googleService;
 
     @GetMapping("/duplication/{username}")
-    public ResponseEntity<Boolean> isNicknameDuplicated(@PathVariable @Size(max = 10) String username) {
-        return new ResponseEntity<>(authService.isUsernameDuplicated(username), HttpStatus.OK);
+    public ApiResponse<Boolean> isNicknameDuplicated(@PathVariable @Size(max = 10) String username) {
+        return new ApiResponse<>(Header.success(), authService.isUsernameDuplicated(username));
     }
 
     @PostMapping("/sign-up")
