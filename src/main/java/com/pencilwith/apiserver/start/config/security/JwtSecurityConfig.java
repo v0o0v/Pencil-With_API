@@ -1,7 +1,7 @@
 package com.pencilwith.apiserver.start.config.security;
 
-import com.pencilwith.apiserver.start.common.jwt.JwtFilter;
-import com.pencilwith.apiserver.start.common.jwt.TokenProvider;
+import com.pencilwith.apiserver.start.config.jwt.JwtFilter;
+import com.pencilwith.apiserver.start.config.jwt.TokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
