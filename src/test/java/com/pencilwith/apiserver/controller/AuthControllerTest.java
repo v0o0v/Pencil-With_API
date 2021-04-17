@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 class AuthControllerTest extends IntegrationTestSetup {
 
     // TODO: 통합 테스트 실행 시 ACCESS_TOKEN 자동으로 얻어오도록 개선
-    private static final String ACCESS_TOKEN = "ya29.a0AfH6SMCs1S1hnTYozJ2yRgXvAj52JVQhp_XKi9Un9ApZrNiQdgfUoabUIpFCTQaiP0p36y2X30hhbWXk2b2wvUlSHGy-veLgt4fDkngfXQU74solK49OnFIJwvvLHrGzlWJv91sH5G8Oc-L7CDNW1nC2ydkTmQ";
+    private static final String ACCESS_TOKEN = "XkYdhwcvPhlRKEbrqxNwfk2BSF8EOZlk5kwq3gorDNMAAAF43ydSIQ";
 
     @Test
     @DisplayName("닉네임 중복 체크")
@@ -43,7 +43,7 @@ class AuthControllerTest extends IntegrationTestSetup {
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
                 .put("accessToken", ACCESS_TOKEN)
-                .put("username", "username1")
+                .put("username", "username2")
                 .put("profileImage", "profile 이미지 URI")
                 .put("genderType", "FEMALE")
                 .put("birth", "2000.01.01")
@@ -70,7 +70,7 @@ class AuthControllerTest extends IntegrationTestSetup {
         // 회원가입 요청 파라미터
         JSONObject jsonObject = new JSONObject()
                 .put("accessToken", ACCESS_TOKEN)
-                .put("username", "username1")
+                .put("username", "username2")
                 .put("profileImage", "profile 이미지 URI")
                 .put("genderType", "FEMALE")
                 .put("birth", "2000.01.01")
