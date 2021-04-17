@@ -27,13 +27,9 @@ spring:
       client:
         registration:
           google:
-            userinfo-request-uri: https://openidconnect.googleapis.com/v1/userinfo
+            userinfo-endpoint: https://openidconnect.googleapis.com/v1/userinfo
           kakao:
-            client-id: 82ddbdc04c6345a022a4c83973202bd8
-            client-secret: EXe6U0mMuuWbLU3REyWpqbu4xGxlW7iS
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            token-request-uri: https://kauth.kakao.com/oauth/token
-            userinfo-request-uri: https://kapi.kakao.com/v2/user/me
+            userinfo-endpoint: https://kapi.kakao.com/v2/user/me
 
 #  h2:
 #    console:
