@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Chapter {
-
     @Id
     @GeneratedValue
     private Long id;
