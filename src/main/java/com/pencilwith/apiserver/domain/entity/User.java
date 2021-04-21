@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
@@ -75,8 +76,10 @@ public class User {
     }
 
     @OneToMany(mappedBy = "owner")
+    @JsonBackReference
     private List<Project> ownerProjectList;
 
     @ManyToMany(mappedBy = "crewList")
+    @JsonBackReference
     private List<Project> project;
 }

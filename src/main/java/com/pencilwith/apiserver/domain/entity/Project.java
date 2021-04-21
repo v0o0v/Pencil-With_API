@@ -24,6 +24,7 @@ public class Project {
 
     @ManyToOne
     @JoinColumn
+    @JsonManagedReference
     private User owner;
 
     @ManyToMany
@@ -32,6 +33,7 @@ public class Project {
             , joinColumns = @JoinColumn(name = "PROJECT_ID")
             , inverseJoinColumns = @JoinColumn(name = "USER_ID")
     )
+    @JsonManagedReference
     private List<User> crewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
