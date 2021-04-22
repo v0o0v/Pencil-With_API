@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("/h2-console/**", "/favicon.ico", "/error","/actuator/**")
+//                .antMatchers("/api/crew/**")
                 .mvcMatchers("/swagger-ui.html/**", "/configuration/**","/swagger-resources/**", "/v2/api-docs","/webjars/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
