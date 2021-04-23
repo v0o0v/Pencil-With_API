@@ -6,8 +6,10 @@ import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class CrewControllerDTO {
 
@@ -25,7 +27,7 @@ public class CrewControllerDTO {
         @NotNull
         private Long projectId;
 
-        @Min(1)
+        @Min(value = 1, message = "모집인원은 최소 1명 이상입니다.")
         private int maxNumber;
 
         private LocalDate startDate;
@@ -36,7 +38,8 @@ public class CrewControllerDTO {
 
         private List<String> userIdListToNoti;
 
-        private NovelGenre genre;
+        @Size(min = 1, message = "최소 하나 이상의 장르를 설정해야 합니다.")
+        private Set<NovelGenre> genre;
 
     }
 

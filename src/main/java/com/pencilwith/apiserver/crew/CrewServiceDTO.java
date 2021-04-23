@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CrewServiceDTO {
@@ -31,7 +32,7 @@ public class CrewServiceDTO {
 
         private List<String> userIdListToNoti;
 
-        private NovelGenre genre;
+        private Set<NovelGenre> genre;
 
         public CrewRecruitDTO(CrewRecruit crewRecruit) {
             this.title = crewRecruit.getTitle();

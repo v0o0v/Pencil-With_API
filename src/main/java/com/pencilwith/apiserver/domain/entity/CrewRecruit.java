@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,8 +37,9 @@ public class CrewRecruit {
 
     private Integer maxNumber;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private NovelGenre genre;
+    private Set<NovelGenre> genre;
 
     @Lob
     private String content;
@@ -46,7 +48,7 @@ public class CrewRecruit {
     private List<User> notiUserList = new ArrayList<>();
 
     @Builder
-    public CrewRecruit(User owner, LocalDateTime createdAt, Project project, String title, LocalDate startDate, LocalDate endDate, Integer maxNumber, NovelGenre genre, String content, List<User> notiUserList) {
+    public CrewRecruit(User owner, LocalDateTime createdAt, Project project, String title, LocalDate startDate, LocalDate endDate, Integer maxNumber, Set<NovelGenre> genre, String content, List<User> notiUserList) {
         this.owner = owner;
         this.createdAt = createdAt;
         this.project = project;
