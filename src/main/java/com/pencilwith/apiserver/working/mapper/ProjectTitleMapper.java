@@ -1,7 +1,6 @@
 package com.pencilwith.apiserver.working.mapper;
 
 import com.pencilwith.apiserver.domain.entity.Project;
-import com.pencilwith.apiserver.working.dto.project.ProjectDto;
 import com.pencilwith.apiserver.working.dto.project.ProjectTitleResponse;
 
 import java.util.List;

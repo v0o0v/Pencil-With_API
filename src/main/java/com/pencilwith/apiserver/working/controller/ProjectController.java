@@ -1,8 +1,8 @@
 package com.pencilwith.apiserver.working.controller;
 
 import com.pencilwith.apiserver.domain.entity.User;
-import com.pencilwith.apiserver.working.dto.project.ProjectDto;
 import com.pencilwith.apiserver.working.dto.project.ProjectRequest;
+import com.pencilwith.apiserver.working.dto.project.ProjectResponse;
 import com.pencilwith.apiserver.working.dto.project.ProjectTitleResponse;
 import com.pencilwith.apiserver.working.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +23,18 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ProjectDto getProject(@RequestParam Long id, @AuthenticationPrincipal User user) {
+    public ProjectResponse getProject(@RequestParam Long id, @AuthenticationPrincipal User user) {
         return projectService.selectProject(id, user);
     }
 
     @PostMapping
-    public ProjectDto createProject(@RequestBody ProjectRequest projectRequest) {
+    public ProjectResponse createProject(@RequestBody ProjectRequest projectRequest) {
         return projectService.createProject(projectRequest);
     }
 
-    @PutMapping
-    public ProjectDto updateProject(@RequestBody ProjectRequest projectRequest, @AuthenticationPrincipal User user) {
-        return projectService.updateProject(projectRequest, user);
+    @PutMapping("/{id}")
+    public ProjectResponse updateProject(@RequestParam Long id, @RequestBody ProjectRequest projectRequest, @AuthenticationPrincipal User user) {
+        return projectService.updateProject(id, projectRequest, user);
     }
 
     @DeleteMapping("/{id}")

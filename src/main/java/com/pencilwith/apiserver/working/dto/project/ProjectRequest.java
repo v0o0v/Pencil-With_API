@@ -16,7 +16,6 @@ public class ProjectRequest {
     private String ownerId;
     private Long projectId;
     private String title;
-    private List<User> crewList = new ArrayList<>();
     private List<ChapterDto> chapterList = new ArrayList<>();
 
     private LocalDateTime createdAt;
