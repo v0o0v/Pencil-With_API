@@ -38,7 +38,7 @@ public class Feedback {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "feedback")
+    @OneToMany(mappedBy = "feedback", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
 
