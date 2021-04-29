@@ -1,11 +1,18 @@
 package com.pencilwith.apiserver.crew;
 
+import com.fasterxml.classmate.TypeResolver;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
@@ -28,6 +35,8 @@ public class SpringFoxConfig {
     @Bean
     public Docket api() {
 
+        TypeResolver typeResolver = new TypeResolver();
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .globalOperationParameters(
                         List.of(new ParameterBuilder().name("Authorization")
@@ -46,7 +55,19 @@ public class SpringFoxConfig {
                 .build()
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
+                .alternateTypeRules(AlternateTypeRules.newRule(Pageable.class, Page.class))
                 ;
+    }
+
+    @Getter
+    @Setter
+    @ApiModel
+    static class Page {
+        private Integer page;
+        private Integer size;
+
+        @ApiModelProperty(value = "사용법 : 컬럼,정렬(asc | desc)\n ex) owner.birth,asc")
+        private List<String> sort;
     }
 
     private ApiKey apiKey() {
