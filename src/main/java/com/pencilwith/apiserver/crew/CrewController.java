@@ -42,4 +42,17 @@ public class CrewController {
                 .body(crewService.getRecruits(pageable));
     }
 
+    @ApiOperation(
+            value = "크루 모집 유저 참여"
+            , notes = "크루 모집에 유저를 참여시킵니다."
+    )
+    @PostMapping("/recruitment/{id}/join")
+    public ResponseEntity<?> joinRecruit(@PathVariable Long id, @RequestParam String userId) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(crewService.joinRecruit(id, userId));
+    }
+
 }

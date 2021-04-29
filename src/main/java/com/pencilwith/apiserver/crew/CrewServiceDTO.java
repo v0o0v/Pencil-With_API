@@ -1,6 +1,7 @@
 package com.pencilwith.apiserver.crew;
 
 import com.pencilwith.apiserver.domain.entity.CrewRecruit;
+import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,5 +49,23 @@ public class CrewServiceDTO {
             this.owner = crewRecruit.getOwner().getId();
         }
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ProjectDTO {
+
+        private Long projectId;
+
+        private List<String> crewList;
+
+        public ProjectDTO(Project project) {
+            this.projectId = project.getId();
+            this.crewList = project.getCrewList().stream()
+                    .map(User::getId)
+                    .collect(Collectors.toList());
+        }
+    }
+
 
 }

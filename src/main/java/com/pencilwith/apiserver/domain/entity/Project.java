@@ -8,8 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,15 +34,15 @@ public class Project {
             , inverseJoinColumns = @JoinColumn(name = "USER_ID")
     )
     @JsonManagedReference
-    private List<User> crewList = new ArrayList<>();
+    private Set<User> crewList = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Chapter> chapterList = new ArrayList<>();
+    private Set<Chapter> chapterList = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Feedback> feedbackList = new ArrayList<>();
+    private Set<Feedback> feedbackList = new HashSet<>();
 
     private LocalDateTime createdAt;
 

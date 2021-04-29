@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +75,26 @@ public class CrewService {
         return new CrewServiceDTO.CrewRecruitDTO(crewRecruit);
     }
 
+    @Transactional(readOnly = true)
     public Page<CrewServiceDTO.CrewRecruitDTO> getRecruits(Pageable pageable) {
         return this.crewRecruitRepository.findAll(pageable).map(CrewServiceDTO.CrewRecruitDTO::new);
+    }
+
+    @Transactional
+    public CrewServiceDTO.ProjectDTO joinRecruit(Long id, String userId) {
+        CrewRecruit crewRecruit = this.crewRecruitRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("크루 모집 아이디가 존재하지 않습니다."));
+
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
+
+        if(user.equals(crewRecruit.getProject().getOwner()))
+            throw new BadRequestException("해당 프로젝트의 Owner 유저는 크루가 될 수 없습니다.");
+
+        Project project = crewRecruit.getProject();
+        project.getCrewList().add(user);
+        project = this.projectRepository.save(project);
+
+        return new CrewServiceDTO.ProjectDTO(project);
     }
 }
