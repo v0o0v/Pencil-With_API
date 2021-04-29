@@ -44,7 +44,7 @@ public class CrewRecruit {
     @Lob
     private String content;
 
-    @OneToMany
+    @ManyToMany
     private List<User> notiUserList = new ArrayList<>();
 
     @Builder
