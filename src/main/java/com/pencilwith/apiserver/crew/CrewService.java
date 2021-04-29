@@ -4,7 +4,7 @@ package com.pencilwith.apiserver.crew;
 import com.pencilwith.apiserver.domain.entity.CrewRecruit;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
-import com.pencilwith.apiserver.domain.exception.exception.BadRequestException;
+import com.pencilwith.apiserver.domain.exception.BadRequestException;
 import com.pencilwith.apiserver.domain.repository.CrewRecruitRepository;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;

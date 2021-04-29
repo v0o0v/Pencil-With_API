@@ -1,4 +1,4 @@
-package com.pencilwith.apiserver.domain.exception.exception;
+package com.pencilwith.apiserver.domain.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
