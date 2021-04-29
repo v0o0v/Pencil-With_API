@@ -34,6 +34,8 @@ public class CrewServiceDTO {
 
         private Set<NovelGenre> genre;
 
+        private String owner;
+
         public CrewRecruitDTO(CrewRecruit crewRecruit) {
             this.title = crewRecruit.getTitle();
             this.projectId = crewRecruit.getProject().getId();
@@ -43,6 +45,7 @@ public class CrewServiceDTO {
             this.content = crewRecruit.getContent();
             this.userIdListToNoti = crewRecruit.getNotiUserList().stream().map(User::getId).collect(Collectors.toList());
             this.genre = crewRecruit.getGenre();
+            this.owner = crewRecruit.getOwner().getId();
         }
     }
 

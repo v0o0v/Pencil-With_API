@@ -10,6 +10,8 @@ import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -71,5 +73,9 @@ public class CrewService {
 
         crewRecruit = this.crewRecruitRepository.save(crewRecruit);
         return new CrewServiceDTO.CrewRecruitDTO(crewRecruit);
+    }
+
+    public Page<CrewServiceDTO.CrewRecruitDTO> getRecruits(Pageable pageable) {
+        return this.crewRecruitRepository.findAll(pageable).map(CrewServiceDTO.CrewRecruitDTO::new);
     }
 }
