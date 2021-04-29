@@ -35,8 +35,6 @@ public class SpringFoxConfig {
     @Bean
     public Docket api() {
 
-        TypeResolver typeResolver = new TypeResolver();
-
         return new Docket(DocumentationType.SWAGGER_2)
                 .globalOperationParameters(
                         List.of(new ParameterBuilder().name("Authorization")
