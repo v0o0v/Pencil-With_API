@@ -29,7 +29,20 @@ public class CrewController {
     }
 
     @ApiOperation(
-            value = "크루 모집 조회"
+            value = "크루 모집 단건 조회"
+            , notes = "크루 모집을 단건으로 조회합니다."
+    )
+    @GetMapping("/recruitment/{id}")
+    public ResponseEntity<?> getCrewRecruits(@PathVariable Long id) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(crewService.getRecruit(id));
+    }
+
+    @ApiOperation(
+            value = "크루 모집 페이징 조회"
             , notes = "크루 모집을 조회합니다. 페이징과 정렬을 지원합니다.\n" +
             "정렬 컬럼 : 저자 생일(owner.birth) / 저자 경력(owner.careerType) / 저자 성별(owner.genderType)"
     )

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,7 +48,7 @@ public class CrewService {
             throw new BadRequestException("해당 사용자의 프로젝트가 아닙니다.");
 
         //해당 프로젝트에 모집이 이미 있는지
-        if(crewRecruitRepository.existsByProject(project))
+        if (crewRecruitRepository.existsByProject(project))
             throw new BadRequestException("해당 프로젝트에 이미 크루 모집 공고가 존재합니다.");
 
         CrewRecruit crewRecruit = CrewRecruit.builder()
@@ -81,7 +80,7 @@ public class CrewService {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
 
-        if(user.equals(crewRecruit.getProject().getOwner()))
+        if (user.equals(crewRecruit.getProject().getOwner()))
             throw new BadRequestException("해당 프로젝트의 Owner 유저는 크루가 될 수 없습니다.");
 
         Project project = crewRecruit.getProject();
@@ -89,5 +88,12 @@ public class CrewService {
         project = this.projectRepository.save(project);
 
         return new CrewServiceDTO.ProjectDTO(project);
+    }
+
+    @Transactional
+    public CrewServiceDTO.CrewRecruitDTO getRecruit(Long id) {
+        CrewRecruit crewRecruit = this.crewRecruitRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("크루 모집 아이디가 존재하지 않습니다."));
+        return new CrewServiceDTO.CrewRecruitDTO(crewRecruit);
     }
 }
