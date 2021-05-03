@@ -2,11 +2,11 @@ package com.pencilwith.apiserver.domain;
 
 import com.pencilwith.apiserver.crew.NovelGenre;
 import com.pencilwith.apiserver.domain.entity.CrewRecruit;
-import com.pencilwith.apiserver.domain.repository.CrewRecruitRepository;
-import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.repository.CrewRecruitRepository;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
+import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +72,14 @@ public class DataMaker implements ApplicationRunner {
         project2.setOwner(user2);
         this.projectRepository.save(project2);
 
+        Project project3 = new Project();
+        project3.setCreatedAt(LocalDateTime.of(2022,02,02,13,55));
+        project3.setTitle("Project3 🤞✌🎁");
+        project3.setOwner(user3);
+        this.projectRepository.save(project3);
+
         CrewRecruit crewRecruit1 = CrewRecruit.builder()
                 .owner(user1)
-                .notiUserList(List.of(user2,user3))
                 .createdAt(LocalDateTime.of(2021,4,1,10,10))
                 .startDate(LocalDate.of(1900,01,01))
                 .endDate(LocalDate.of(2100,01,01))
@@ -88,7 +93,6 @@ public class DataMaker implements ApplicationRunner {
 
         CrewRecruit crewRecruit2 = CrewRecruit.builder()
                 .owner(user2)
-                .notiUserList(List.of(user3))
                 .createdAt(LocalDateTime.of(2021,5,1,10,10))
                 .startDate(LocalDate.of(2021,01,01))
                 .endDate(LocalDate.of(2222,01,01))

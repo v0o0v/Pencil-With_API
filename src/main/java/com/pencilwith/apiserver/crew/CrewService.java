@@ -52,12 +52,6 @@ public class CrewService {
         if(crewRecruitRepository.existsByProject(project))
             throw new BadRequestException("해당 프로젝트에 이미 크루 모집 공고가 존재합니다.");
 
-        //노티 유저의 ID가 다 존재하는지
-        List<User> userList = userRepository.findAllById(request.getUserIdListToNoti());
-        if (userList.size() != request.getUserIdListToNoti().size()) {
-            throw new BadRequestException("ID가 없는 사용자가 존재합니다.");
-        }
-
         CrewRecruit crewRecruit = CrewRecruit.builder()
                 .createdAt(LocalDateTime.now())
                 .title(request.getTitle())
@@ -67,7 +61,6 @@ public class CrewService {
                 .content(request.getContent())
                 .project(project)
                 .genre(request.getGenre())
-                .notiUserList(userList)
                 .maxNumber(request.getMaxNumber())
                 .build();
 

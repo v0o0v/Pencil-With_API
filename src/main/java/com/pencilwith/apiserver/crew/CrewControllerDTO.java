@@ -36,8 +36,6 @@ public class CrewControllerDTO {
 
         private String content;
 
-        private List<String> userIdListToNoti;
-
         @Size(min = 1, message = "최소 하나 이상의 장르를 설정해야 합니다.")
         private Set<NovelGenre> genre;
 

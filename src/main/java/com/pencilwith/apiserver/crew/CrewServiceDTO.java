@@ -31,8 +31,6 @@ public class CrewServiceDTO {
 
         private String content;
 
-        private List<String> userIdListToNoti;
-
         private Set<NovelGenre> genre;
 
         private String owner;
@@ -44,7 +42,6 @@ public class CrewServiceDTO {
             this.startDate = crewRecruit.getStartDate();
             this.endDate = crewRecruit.getEndDate();
             this.content = crewRecruit.getContent();
-            this.userIdListToNoti = crewRecruit.getNotiUserList().stream().map(User::getId).collect(Collectors.toList());
             this.genre = crewRecruit.getGenre();
             this.owner = crewRecruit.getOwner().getId();
         }

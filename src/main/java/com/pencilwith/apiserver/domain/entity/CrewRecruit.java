@@ -44,11 +44,8 @@ public class CrewRecruit {
     @Lob
     private String content;
 
-    @ManyToMany
-    private List<User> notiUserList = new ArrayList<>();
-
     @Builder
-    public CrewRecruit(User owner, LocalDateTime createdAt, Project project, String title, LocalDate startDate, LocalDate endDate, Integer maxNumber, Set<NovelGenre> genre, String content, List<User> notiUserList) {
+    public CrewRecruit(User owner, LocalDateTime createdAt, Project project, String title, LocalDate startDate, LocalDate endDate, Integer maxNumber, Set<NovelGenre> genre, String content) {
         this.owner = owner;
         this.createdAt = createdAt;
         this.project = project;
@@ -58,6 +55,5 @@ public class CrewRecruit {
         this.maxNumber = maxNumber;
         this.genre = genre;
         this.content = content;
-        this.notiUserList = notiUserList;
     }
 }
