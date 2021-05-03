@@ -2,6 +2,7 @@ package com.pencilwith.apiserver.working.service;
 
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.exception.BadRequestException;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.working.dto.project.ProjectRequest;
 import com.pencilwith.apiserver.working.dto.project.ProjectResponse;
@@ -37,22 +38,22 @@ public class ProjectService {
     }
 
     public ProjectResponse updateProject(Long id, ProjectRequest projectRequest, User user) {
-        checkUser(id, user);
+        checkUser(id, user, "해당 프로젝트를 변경할 수 없습니다.");
         Project newProject = projectRepository.save(ProjectMapper.toEntity(projectRequest));
         return ProjectMapper.toDto(newProject);
     }
 
     public void deleteProject(Long id, User user) {
-        checkUser(id, user);
+        checkUser(id, user, "해당 프로젝트를 삭제할 수 없습니다.");
         // 사용자의 프로젝트 중, 해당하는 프로젝트 삭제
         projectRepository.deleteById(id);
     }
 
-    private void checkUser(Long id, User user) {
+    private void checkUser(Long id, User user, String msg) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
         User Owner = project.getOwner();
-        if(Owner.getId() != user.getId())
-            throw new NullPointerException();
+        if(Owner.getId().equals(user.getId()))
+            throw new BadRequestException(msg);
     }
 }
