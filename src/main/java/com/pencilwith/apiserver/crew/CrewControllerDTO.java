@@ -19,9 +19,6 @@ public class CrewControllerDTO {
     public static class RecruitRequestDTO {
 
         @NotNull
-        private String ownerId;
-
-        @NotNull
         private String title;
 
         @NotNull

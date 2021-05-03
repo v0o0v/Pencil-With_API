@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,20 +32,18 @@ public class CrewService {
     @Transactional
     public CrewServiceDTO.CrewRecruitDTO makeRecruit(CrewControllerDTO.RecruitRequestDTO request) {
 
-        //owner ID가 존재하는지
-        User user = this.userRepository.findById(request.getOwnerId())
-                .orElseThrow(() -> new BadRequestException("해당 사용자가 존재하지 않습니다."));
-
         //존재하는 프로젝트인지
         Project project = projectRepository.findById(request.getProjectId())
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
 
-        //request의 owner와 프로젝트의 owner가 일치하는지
-        if (!user.getOwnerProjectList().stream()
-                .map(Project::getId)
-                .collect(Collectors.toList())
-                .contains(request.getProjectId()))
-            throw new BadRequestException("해당 사용자의 프로젝트가 아닙니다.");
+
+        org.springframework.security.core.userdetails.User curUser = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!curUser.getUsername().equals(project.getOwner().getId())) {
+            throw new BadRequestException("현재 로그인된 사용자의 프로젝트가 아닙니다.");
+        }
+
+        User user = this.userRepository.findById(curUser.getUsername())
+                .orElseThrow(() -> new BadRequestException("로그인된 사용자의 정보가 존재하지 않습니다."));
 
         //해당 프로젝트에 모집이 이미 있는지
         if (crewRecruitRepository.existsByProject(project))
