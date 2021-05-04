@@ -1,9 +1,6 @@
 package com.pencilwith.apiserver.domain;
 
-import com.pencilwith.apiserver.crew.NovelGenre;
-import com.pencilwith.apiserver.domain.entity.CrewRecruit;
-import com.pencilwith.apiserver.domain.entity.Project;
-import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.entity.*;
 import com.pencilwith.apiserver.domain.repository.CrewRecruitRepository;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Profile("dev")
@@ -88,6 +84,7 @@ public class DataMaker implements ApplicationRunner {
                 .maxNumber(10)
                 .title("크루 모집해요~ 👌👌👌😘")
                 .project(project1)
+                .crewRecruitState(CrewRecruitState.POST)
                 .build();
         this.crewRecruitRepository.save(crewRecruit1);
 
@@ -101,6 +98,7 @@ public class DataMaker implements ApplicationRunner {
                 .maxNumber(3)
                 .title("invite you!! 💖")
                 .project(project2)
+                .crewRecruitState(CrewRecruitState.POST)
                 .build();
         this.crewRecruitRepository.save(crewRecruit2);
 

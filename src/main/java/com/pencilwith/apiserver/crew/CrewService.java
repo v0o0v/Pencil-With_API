@@ -2,6 +2,7 @@ package com.pencilwith.apiserver.crew;
 
 
 import com.pencilwith.apiserver.domain.entity.CrewRecruit;
+import com.pencilwith.apiserver.domain.entity.CrewRecruitState;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
@@ -59,6 +60,7 @@ public class CrewService {
                 .project(project)
                 .genre(request.getGenre())
                 .maxNumber(request.getMaxNumber())
+                .crewRecruitState(CrewRecruitState.POST)
                 .build();
 
         crewRecruit = this.crewRecruitRepository.save(crewRecruit);

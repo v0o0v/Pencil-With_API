@@ -43,11 +43,11 @@ public class CrewController {
 
     @ApiOperation(
             value = "크루 모집 페이징 조회"
-            , notes = "크루 모집을 조회합니다. 페이징과 정렬을 지원합니다.\n" +
-            "정렬 컬럼 : 저자 생일(owner.birth) / 저자 경력(owner.careerType) / 저자 성별(owner.genderType)"
+            , notes = "크루 모집을 조회합니다. 페이징과 필터링을 지원합니다. 생성 최신순으로 기본 정렬되어 반환합니다."
+
     )
     @GetMapping("/recruitment")
-    public ResponseEntity<?> getCrewRecruits(Pageable pageable) {
+    public ResponseEntity<?> getCrewRecruits( Pageable pageable) {
 
         return ResponseEntity
                 .ok()

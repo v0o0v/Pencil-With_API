@@ -1,8 +1,6 @@
 package com.pencilwith.apiserver.crew;
 
-import com.pencilwith.apiserver.domain.entity.CrewRecruit;
-import com.pencilwith.apiserver.domain.entity.Project;
-import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +33,8 @@ public class CrewServiceDTO {
 
         private String owner;
 
+        private CrewRecruitState state;
+
         public CrewRecruitDTO(CrewRecruit crewRecruit) {
             this.title = crewRecruit.getTitle();
             this.projectId = crewRecruit.getProject().getId();
@@ -44,6 +44,7 @@ public class CrewServiceDTO {
             this.content = crewRecruit.getContent();
             this.genre = crewRecruit.getGenre();
             this.owner = crewRecruit.getOwner().getId();
+            this.state = crewRecruit.getState();
         }
     }
 

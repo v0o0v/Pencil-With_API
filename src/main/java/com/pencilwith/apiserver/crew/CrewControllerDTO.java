@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.crew;
 
+import com.pencilwith.apiserver.domain.entity.NovelGenre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 public class CrewControllerDTO {
