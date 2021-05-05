@@ -1,12 +1,18 @@
 package com.pencilwith.apiserver.crew;
 
+import com.pencilwith.apiserver.domain.entity.NovelGenre;
+import com.pencilwith.apiserver.start.model.enums.CareerType;
+import com.pencilwith.apiserver.start.model.enums.GenderType;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/crew")
@@ -20,7 +26,7 @@ public class CrewController {
             , notes = "크루 모집 요강 정보를 바탕으로 크루 모집을 생성합니다."
     )
     @PostMapping("/recruitment")
-    public ResponseEntity<?> recruitCrew(@RequestBody @Validated CrewControllerDTO.RecruitRequestDTO request) {
+    public ResponseEntity<?> recruitCrew(@RequestBody @Validated CrewControllerDTO.PostRecruitRequestDTO request) {
 
         return ResponseEntity
                 .ok()
@@ -43,16 +49,35 @@ public class CrewController {
 
     @ApiOperation(
             value = "크루 모집 페이징 조회"
-            , notes = "크루 모집을 조회합니다. 페이징과 필터링을 지원합니다. 생성 최신순으로 기본 정렬되어 반환합니다."
+            , notes = "크루 모집을 조회합니다. 게시중인 크루 모집만 조회합니다. 페이징과 필터링을 지원하며 생성 최신순으로 기본 정렬되어 반환합니다.\n" +
+            "필터링을 원하는 속성에 값을 넣으면 해당 필터가 존재하는 데이터를 반환하며 아무것도 넣지 않으면 해당 속성은 필터링하지 않습니다."
 
     )
     @GetMapping("/recruitment")
-    public ResponseEntity<?> getCrewRecruits( Pageable pageable) {
+    public ResponseEntity<?> getCrewRecruits(
+            @RequestParam(required = false) Integer page
+            , @RequestParam(required = false) Integer size
+            , @RequestParam(required = false) Set<GenderType> genderTypes
+            , @RequestParam(required = false) Integer minAge
+            , @RequestParam(required = false) Integer maxAge
+            , @RequestParam(required = false) Set<CareerType> careerTypes
+            , @RequestParam(required = false) Set<NovelGenre> novelGenres) {
+
+        CrewServiceDTO.CrewRecruitFilterDTO requestDTO = CrewServiceDTO.CrewRecruitFilterDTO.builder()
+                .genderTypes(genderTypes)
+                .minAge(minAge)
+                .maxAge(maxAge)
+                .careerTypes(careerTypes)
+                .novelGenres(novelGenres)
+                .build();
+
+        if(page==null) page = 0;
+        if(size==null) size = 20;
 
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(crewService.getRecruits(pageable));
+                .body(crewService.getRecruits(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"createdAt")), requestDTO));
     }
 
     @ApiOperation(

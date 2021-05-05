@@ -1,6 +1,9 @@
 package com.pencilwith.apiserver.crew;
 
 import com.pencilwith.apiserver.domain.entity.*;
+import com.pencilwith.apiserver.start.model.enums.CareerType;
+import com.pencilwith.apiserver.start.model.enums.GenderType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -62,6 +65,31 @@ public class CrewServiceDTO {
             this.crewList = project.getCrewList().stream()
                     .map(User::getId)
                     .collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CrewRecruitFilterDTO {
+
+        private Set<GenderType> genderTypes;
+
+        private Integer minAge;
+
+        private Integer maxAge;
+
+        private Set<CareerType> careerTypes;
+
+        private Set<NovelGenre> novelGenres;
+
+        @Builder
+        public CrewRecruitFilterDTO(Set<GenderType> genderTypes, Integer minAge, Integer maxAge, Set<CareerType> careerTypes, Set<NovelGenre> novelGenres) {
+            this.genderTypes = genderTypes;
+            this.minAge = minAge;
+            this.maxAge = maxAge;
+            this.careerTypes = careerTypes;
+            this.novelGenres = novelGenres;
         }
     }
 

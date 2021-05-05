@@ -16,7 +16,7 @@ public class CrewControllerDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class RecruitRequestDTO {
+    public static class PostRecruitRequestDTO {
 
         @NotNull
         private String title;

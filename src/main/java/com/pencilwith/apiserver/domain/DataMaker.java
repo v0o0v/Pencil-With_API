@@ -102,5 +102,19 @@ public class DataMaker implements ApplicationRunner {
                 .build();
         this.crewRecruitRepository.save(crewRecruit2);
 
+        CrewRecruit crewRecruit3 = CrewRecruit.builder()
+                .owner(user3)
+                .createdAt(LocalDateTime.of(2021,5,1,10,10))
+                .startDate(LocalDate.of(2021,01,01))
+                .endDate(LocalDate.of(2222,01,01))
+                .content("3333333333333333")
+                .genre(Set.of(NovelGenre.무협))
+                .maxNumber(33)
+                .title("3333333333333333333")
+                .project(project3)
+                .crewRecruitState(CrewRecruitState.FINISH)
+                .build();
+        this.crewRecruitRepository.save(crewRecruit3);
+
     }
 }
