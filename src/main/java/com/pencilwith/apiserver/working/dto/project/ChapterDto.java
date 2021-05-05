@@ -3,23 +3,18 @@ package com.pencilwith.apiserver.working.dto.project;
 import com.pencilwith.apiserver.domain.entity.Chapter;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
-@Builder
+@NoArgsConstructor
 public class ChapterDto {
     private Long chapterId;
     private String content;
 
-    public ChapterDto toChapterDto(Chapter chapter) {
-        return ChapterDto.builder()
-                .chapterId(chapter.getId())
-                .content(chapter.getContent())
-                .build();
-    }
-
-    public void toEntity(ChapterDto chapterDto) {
-        //
+    @Builder
+    public ChapterDto(Long chapterId, String content) {
+        this.chapterId = chapterId;
+        this.content = content;
     }
 }
