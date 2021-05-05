@@ -2,10 +2,7 @@ package com.pencilwith.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,4 +39,14 @@ public class Feedback {
     @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
 
+    @Builder
+    public Feedback(Long id, User owner, Project project, LocalDateTime createdAt, String position, String content, List<Reply> replyList) {
+        this.id = id;
+        this.owner = owner;
+        this.project = project;
+        this.createdAt = createdAt;
+        this.position = position;
+        this.content = content;
+        this.replyList = replyList;
+    }
 }

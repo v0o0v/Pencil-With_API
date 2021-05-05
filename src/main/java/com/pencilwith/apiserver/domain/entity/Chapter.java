@@ -1,10 +1,7 @@
 package com.pencilwith.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -26,4 +23,11 @@ public class Chapter {
 
     @Lob
     private String content;
+
+    @Builder
+    public Chapter(Long id, Project project, String content) {
+        this.id = id;
+        this.project = project;
+        this.content = content;
+    }
 }

@@ -1,10 +1,7 @@
 package com.pencilwith.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -48,4 +45,14 @@ public class Project {
 
     private String title;
 
+    @Builder
+    public Project(Long id, User owner, Set<User> crewList, Set<Chapter> chapterList, Set<Feedback> feedbackList, LocalDateTime createdAt, String title) {
+        this.id = id;
+        this.owner = owner;
+        this.crewList = crewList;
+        this.chapterList = chapterList;
+        this.feedbackList = feedbackList;
+        this.createdAt = createdAt;
+        this.title = title;
+    }
 }
