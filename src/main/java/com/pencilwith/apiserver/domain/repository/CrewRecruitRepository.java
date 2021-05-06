@@ -4,6 +4,10 @@ import com.pencilwith.apiserver.domain.entity.CrewRecruit;
 import com.pencilwith.apiserver.domain.entity.CrewRecruitState;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
+import com.querydsl.core.types.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
@@ -13,6 +17,10 @@ public interface CrewRecruitRepository extends JpaRepository<CrewRecruit, Long>,
 
     boolean existsByProject(Project p);
 
+    @EntityGraph(attributePaths = {"owner", "project", "genre"})
     List<CrewRecruit> findByOwnerAndStateNotOrderByCreatedAtDesc(User user, CrewRecruitState state);
+
+    @EntityGraph(attributePaths = {"owner", "project", "genre"})
+    Page<CrewRecruit> findAll(Predicate predicate, Pageable pageable);
 
 }
