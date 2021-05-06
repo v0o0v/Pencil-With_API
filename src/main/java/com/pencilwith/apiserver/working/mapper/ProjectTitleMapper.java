@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class ProjectTitleMapper {
     public static List<ProjectTitleResponse> toDto(List<Project> projects) {
         return projects.stream().map(project -> ProjectTitleResponse.builder()
-                                .ownerId(project.getOwner().getId())
                                 .projectId(project.getId())
                                 .title(project.getTitle())
         .build()).collect(Collectors.toList());
