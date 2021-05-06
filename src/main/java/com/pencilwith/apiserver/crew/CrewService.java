@@ -40,12 +40,12 @@ public class CrewService {
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
 
 
-        org.springframework.security.core.userdetails.User curUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!curUser.getUsername().equals(project.getOwner().getId())) {
+        org.springframework.security.core.userdetails.User principal = getPrincipal();
+        if (!principal.getUsername().equals(project.getOwner().getId())) {
             throw new BadRequestException("현재 로그인된 사용자의 프로젝트가 아닙니다.");
         }
 
-        User user = this.userRepository.findById(curUser.getUsername())
+        User user = this.userRepository.findById(principal.getUsername())
                 .orElseThrow(() -> new BadRequestException("로그인된 사용자의 정보가 존재하지 않습니다."));
 
         //해당 프로젝트에 모집이 이미 있는지
@@ -123,12 +123,32 @@ public class CrewService {
 
     @Transactional(readOnly = true)
     public List<CrewServiceDTO.CrewRecruitDTO> getRecruitOfMe() {
-        org.springframework.security.core.userdetails.User curUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userRepository.findById(curUser.getUsername())
+        org.springframework.security.core.userdetails.User principal = getPrincipal();
+        User user = this.userRepository.findById(principal.getUsername())
                 .orElseThrow(() -> new BadRequestException("로그인된 사용자의 정보가 존재하지 않습니다."));
 
         return this.crewRecruitRepository.findByOwnerAndStateNotOrderByCreatedAtDesc(user,CrewRecruitState.DELETE).stream()
                 .map(CrewServiceDTO.CrewRecruitDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public CrewServiceDTO.CrewRecruitDTO modifyRecruitCrewState(Long id, CrewRecruitState state) {
+        CrewRecruit crewRecruit = this.crewRecruitRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("크루 모집 아이디가 존재하지 않습니다."));
+
+        Project project = crewRecruit.getProject();
+
+        org.springframework.security.core.userdetails.User principal = getPrincipal();
+        if (!principal.getUsername().equals(project.getOwner().getId())) {
+            throw new BadRequestException("현재 로그인된 사용자의 프로젝트가 아닙니다.");
+        }
+
+        crewRecruit.setState(state);
+        return new CrewServiceDTO.CrewRecruitDTO(this.crewRecruitRepository.save(crewRecruit));
+    }
+
+    private org.springframework.security.core.userdetails.User getPrincipal() {
+        return (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

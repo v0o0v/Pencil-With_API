@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.crew;
 
+import com.pencilwith.apiserver.domain.entity.CrewRecruitState;
 import com.pencilwith.apiserver.domain.entity.NovelGenre;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
@@ -71,13 +72,13 @@ public class CrewController {
                 .novelGenres(novelGenres)
                 .build();
 
-        if(page==null) page = 0;
-        if(size==null) size = 20;
+        if (page == null) page = 0;
+        if (size == null) size = 20;
 
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(crewService.getRecruits(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"createdAt")), requestDTO));
+                .body(crewService.getRecruits(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt")), requestDTO));
     }
 
     @ApiOperation(
@@ -104,6 +105,21 @@ public class CrewController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(crewService.getRecruitOfMe());
+    }
+
+    @ApiOperation(
+            value = "크루 모집의 상태 변경"
+            , notes = "크루 모집의 상태를 변경합니다. 크루 모집 공고의 owner 유저만 상태를 변경할 수 있습니다."
+    )
+    @PutMapping("/recruitment/{id}/state")
+    public ResponseEntity<?> modifyRecruitCrewState(
+            @PathVariable Long id
+            , @RequestParam CrewRecruitState state) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(crewService.modifyRecruitCrewState(id, state));
     }
 
 }
