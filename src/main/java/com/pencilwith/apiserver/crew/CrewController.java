@@ -93,4 +93,17 @@ public class CrewController {
                 .body(crewService.joinRecruit(id, userId));
     }
 
+    @ApiOperation(
+            value = "로그인 유저의 크루 모집 조회"
+            , notes = "로그인 유저의 모든 크루 모집을 조회합니다(삭제된 모집 제외). 생성역순으로 정렬되어 반환됩니다."
+    )
+    @GetMapping("/recruitment/me")
+    public ResponseEntity<?> getCrewRecruitsOfMe() {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(crewService.getRecruitOfMe());
+    }
+
 }

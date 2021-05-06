@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -112,10 +114,21 @@ public class CrewService {
         return new CrewServiceDTO.ProjectDTO(project);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CrewServiceDTO.CrewRecruitDTO getRecruit(Long id) {
         CrewRecruit crewRecruit = this.crewRecruitRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("크루 모집 아이디가 존재하지 않습니다."));
         return new CrewServiceDTO.CrewRecruitDTO(crewRecruit);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CrewServiceDTO.CrewRecruitDTO> getRecruitOfMe() {
+        org.springframework.security.core.userdetails.User curUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userRepository.findById(curUser.getUsername())
+                .orElseThrow(() -> new BadRequestException("로그인된 사용자의 정보가 존재하지 않습니다."));
+
+        return this.crewRecruitRepository.findByOwnerAndStateNotOrderByCreatedAtDesc(user,CrewRecruitState.DELETE).stream()
+                .map(CrewServiceDTO.CrewRecruitDTO::new)
+                .collect(Collectors.toList());
     }
 }
