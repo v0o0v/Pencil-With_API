@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class ProjectRequest {
-    private User owner;
+    private String ownerId;
     private Long projectId;
     private String title;
     private Set<User> crewList = new HashSet<>();
@@ -23,8 +23,8 @@ public class ProjectRequest {
     private LocalDateTime createdAt;
 
     @Builder
-    public ProjectRequest(User owner, Long projectId, String title, Set<User> crewList, List<ChapterDto> chapterList, LocalDateTime createdAt) {
-        this.owner = owner;
+    public ProjectRequest(String ownerId, Long projectId, String title, Set<User> crewList, List<ChapterDto> chapterList, LocalDateTime createdAt) {
+        this.ownerId = ownerId;
         this.projectId = projectId;
         this.title = title;
         this.crewList = crewList;
