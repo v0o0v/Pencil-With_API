@@ -31,11 +31,6 @@ spring:
           kakao:
             userinfo-endpoint: https://kapi.kakao.com/v2/user/me
 
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
-
 logging:
   level:
     com:
