@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CrewRecruitRepository extends JpaRepository<CrewRecruit, Long>, QuerydslPredicateExecutor<CrewRecruit> {
@@ -22,5 +23,7 @@ public interface CrewRecruitRepository extends JpaRepository<CrewRecruit, Long>,
 
     @EntityGraph(attributePaths = {"owner", "project", "genre"})
     Page<CrewRecruit> findAll(Predicate predicate, Pageable pageable);
+
+    List<CrewRecruit> findByCreatedAtBeforeAndState(LocalDateTime before, CrewRecruitState crewRecruitState);
 
 }
