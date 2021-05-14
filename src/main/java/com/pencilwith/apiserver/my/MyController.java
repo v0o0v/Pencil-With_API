@@ -47,4 +47,14 @@ public class MyController {
                 .body(myService.modifyUserProfileImage(id, image));
     }
 
+    @ApiOperation(value = "완료된 프로젝트 리스트 조회")
+    @GetMapping("/user/{id}/finishedProjects")
+    public ResponseEntity<?> getFinishedProjects(@PathVariable String id) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(myService.getFinishedProjects(id));
+    }
+
 }

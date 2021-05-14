@@ -1,5 +1,6 @@
 package com.pencilwith.apiserver.my;
 
+import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
@@ -59,6 +60,19 @@ public class MyDTO {
 
         private String introduction;
 
+    }
+
+    @Getter
+    @Setter
+    public static class ProjectDTO {
+
+        private Long id;
+        private String title;
+
+        public ProjectDTO(Project project) {
+            this.id = project.getId();
+            this.title = project.getTitle();
+        }
     }
 
 }

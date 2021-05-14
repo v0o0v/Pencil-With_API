@@ -74,7 +74,7 @@ public class DataMaker implements ApplicationRunner {
         project3.setCreatedAt(LocalDateTime.of(2022,02,02,13,55));
         project3.setTitle("Project3 🤞✌🎁");
         project3.setOwner(user3);
-        project3.setStatus(ProjectStatus.PROGRESS);
+        project3.setStatus(ProjectStatus.FINISH);
         this.projectRepository.save(project3);
 
         CrewRecruit crewRecruit1 = CrewRecruit.builder()
