@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/my")
@@ -16,10 +13,7 @@ public class MyController {
 
     private final MyService myService;
 
-    @ApiOperation(
-            value = "유저 정보 단건 조회"
-            , notes = "유저 ID를 입력하여 유저 정보를 조회합니다"
-    )
+    @ApiOperation(value = "유저 프로필 단건 조회")
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable String id) {
 
@@ -27,6 +21,19 @@ public class MyController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(myService.getUserInfo(id));
+    }
+
+    @ApiOperation(value = "유저 프로필 수정"
+            , notes = "요청한 값으로 유저 프로필 값을 변경합니다. 요청 속성이 null이면 수정하지 않습니다.")
+    @PutMapping("/user/{id}")
+    public ResponseEntity<?> modifyUserInfo(
+            @PathVariable String id
+            , @RequestBody MyDTO.ModifyUserDTO modifyUserDTO) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(myService.modifyUserInfo(id, modifyUserDTO));
     }
 
 }

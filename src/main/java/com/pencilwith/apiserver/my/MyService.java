@@ -22,4 +22,27 @@ public class MyService {
                 .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
         return new MyDTO.UserDTO(user);
     }
+
+    @Transactional
+    public MyDTO.UserDTO modifyUserInfo(String id, MyDTO.ModifyUserDTO modifyUserDTO) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
+
+        if(modifyUserDTO.getName()!=null)
+            user.setUsername(modifyUserDTO.getName());
+        if(modifyUserDTO.getBirth()!=null)
+            user.setBirth(modifyUserDTO.getBirth());
+        if(modifyUserDTO.getCareerType()!=null)
+            user.setCareerType(modifyUserDTO.getCareerType());
+        if(modifyUserDTO.getIntroduction()!=null)
+            user.setIntroduction(modifyUserDTO.getIntroduction());
+        if(modifyUserDTO.getGenderType()!=null)
+            user.setGenderType(modifyUserDTO.getGenderType());
+        if(modifyUserDTO.getLocationType()!=null)
+            user.setLocationType(modifyUserDTO.getLocationType());
+
+        user = this.userRepository.save(user);
+
+        return new MyDTO.UserDTO(user);
+    }
 }

@@ -43,4 +43,22 @@ public class MyDTO {
         }
     }
 
+    @Getter
+    @Setter
+    public static class ModifyUserDTO {
+
+        private String name;
+
+        private GenderType genderType;
+
+        private LocalDate birth;
+
+        private LocationType locationType;
+
+        private CareerType careerType;
+
+        private String introduction;
+
+    }
+
 }
