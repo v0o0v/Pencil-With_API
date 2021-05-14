@@ -1,6 +1,7 @@
 package com.pencilwith.apiserver.my;
 
 import com.pencilwith.apiserver.domain.entity.Project;
+import com.pencilwith.apiserver.domain.entity.ProjectStatus;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
@@ -68,10 +69,12 @@ public class MyDTO {
 
         private Long id;
         private String title;
+        private ProjectStatus status;
 
         public ProjectDTO(Project project) {
             this.id = project.getId();
             this.title = project.getTitle();
+            this.status = project.getStatus();
         }
     }
 

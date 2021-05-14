@@ -57,4 +57,15 @@ public class MyController {
                 .body(myService.getFinishedProjects(id));
     }
 
+    @ApiOperation(value = "완료된 프로젝트 재작업"
+            , notes = "반환값은 해당 유저의 완료된 프로젝트 리스트")
+    @PutMapping("/user/{userId}/reworkProject/{projectId}")
+    public ResponseEntity<?> reworkProject(@PathVariable String userId, @PathVariable Long projectId) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(myService.reworkProject(userId, projectId));
+    }
+
 }

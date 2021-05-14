@@ -78,4 +78,13 @@ public class MyService {
                 .collect(Collectors.toList());
 
     }
+
+    @Transactional
+    public List<MyDTO.ProjectDTO> reworkProject(String userId, Long projectId) {
+        Project project = this.projectRepository.findById(projectId)
+                .orElseThrow(() -> new BadRequestException("프로젝트가 존재하지 않습니다."));
+        project.setStatus(ProjectStatus.PROGRESS);
+
+        return this.getFinishedProjects(userId);
+    }
 }
