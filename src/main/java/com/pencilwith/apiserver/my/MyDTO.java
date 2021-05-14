@@ -15,6 +15,8 @@ public class MyDTO {
     @Setter
     public static class UserDTO {
 
+        private String id;
+
         private String name;
 
         private GenderType genderType;
@@ -27,13 +29,17 @@ public class MyDTO {
 
         private String introduction;
 
+        private String profileImage;
+
         public UserDTO(User user) {
+            this.id = user.getId();
             this.name = user.getUsername();
             this.genderType = user.getGenderType();
             this.birth = user.getBirth();
             this.locationType = user.getLocationType();
             this.careerType = user.getCareerType();
             this.introduction = user.getIntroduction();
+            this.profileImage = user.getProfileImage();
         }
     }
 
