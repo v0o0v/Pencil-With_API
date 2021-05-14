@@ -60,18 +60,21 @@ public class DataMaker implements ApplicationRunner {
         project1.setCreatedAt(LocalDateTime.of(2021,01,01,10,15));
         project1.setTitle("Project1 프로젝트1 😊");
         project1.setOwner(user1);
+        project1.setStatus(ProjectStatus.PROGRESS);
         this.projectRepository.save(project1);
 
         Project project2 = new Project();
         project2.setCreatedAt(LocalDateTime.of(2021,02,02,13,55));
         project2.setTitle("Project2 🤞✌🎁");
         project2.setOwner(user2);
+        project2.setStatus(ProjectStatus.PROGRESS);
         this.projectRepository.save(project2);
 
         Project project3 = new Project();
         project3.setCreatedAt(LocalDateTime.of(2022,02,02,13,55));
         project3.setTitle("Project3 🤞✌🎁");
         project3.setOwner(user3);
+        project3.setStatus(ProjectStatus.PROGRESS);
         this.projectRepository.save(project3);
 
         CrewRecruit crewRecruit1 = CrewRecruit.builder()
