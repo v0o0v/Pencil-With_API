@@ -14,7 +14,7 @@ public class TokenMaker {
         byte[] keyBytes = Decoders.BASE64.decode("c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK");
         Key key = Keys.hmacShaKeyFor(keyBytes);
         String authorities = "ROLE_USER, ROLE_ADMIN";
-        Date expiration = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 10);
+        Date expiration = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 100000);
 
         System.out.println(Jwts.builder()
                 .setSubject("user1")
