@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/my")
@@ -34,6 +35,16 @@ public class MyController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(myService.modifyUserInfo(id, modifyUserDTO));
+    }
+
+    @ApiOperation(value = "유저 프로필 사진 수정")
+    @PutMapping("/user/{id}/profileImage")
+    public ResponseEntity<?> modifyUserProfileImage(@PathVariable String id, @RequestParam MultipartFile image) {
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(myService.modifyUserProfileImage(id, image));
     }
 
 }

@@ -4,10 +4,12 @@ package com.pencilwith.apiserver.my;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
+import com.pencilwith.apiserver.util.AWSService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MyService {
 
     final UserRepository userRepository;
+
+    final AWSService awsService;
 
     @Transactional(readOnly = true)
     public MyDTO.UserDTO getUserInfo(String id) {
@@ -43,6 +47,15 @@ public class MyService {
 
         user = this.userRepository.save(user);
 
+        return new MyDTO.UserDTO(user);
+    }
+
+    @Transactional
+    public MyDTO.UserDTO modifyUserProfileImage(String id, MultipartFile image) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
+        String imageURL = this.awsService.upload(image);
+        user.setProfileImage(imageURL);
         return new MyDTO.UserDTO(user);
     }
 }
