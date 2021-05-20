@@ -49,12 +49,8 @@ public class Project {
     private ProjectStatus status;
 
     @Builder
-    public Project(Long id, User owner, Set<User> crewList, Set<Chapter> chapterList, Set<Feedback> feedbackList, LocalDateTime createdAt, String title) {
-        this.id = id;
+    public Project(User owner, LocalDateTime createdAt, String title) {
         this.owner = owner;
-        this.crewList = crewList;
-        this.chapterList = chapterList;
-        this.feedbackList = feedbackList;
         this.createdAt = createdAt;
         this.title = title;
         this.status = ProjectStatus.PROGRESS;

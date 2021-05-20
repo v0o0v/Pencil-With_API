@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,10 +25,18 @@ public class Chapter {
     @Lob
     private String content;
 
+    private LocalDateTime createAt;
+
+    private String title;
+
+    private ChapterStatus status;
+
     @Builder
-    public Chapter(Long id, Project project, String content) {
-        this.id = id;
+    public Chapter(Project project, String content, LocalDateTime createAt, String title, ChapterStatus status) {
         this.project = project;
         this.content = content;
+        this.createAt = createAt;
+        this.title = title;
+        this.status = status;
     }
 }

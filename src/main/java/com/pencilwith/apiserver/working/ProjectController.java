@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,14 +24,13 @@ public class ProjectController {
     public ResponseEntity<?> getProject(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getProject(id));
     }
-//
-//    @ApiOperation(value = "소설 발행",
-//            notes = "입력받은 데이터를 기반으로 My 소설을 한 건 발행합니다.")
-//    @PostMapping
-//    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest projectRequest) {
-//        return ResponseEntity.ok(projectService.createProject(projectRequest));
-//    }
-//
+
+    @ApiOperation(value = "신규 Project 생성")
+    @PostMapping
+    public ResponseEntity<?> createProject(@RequestBody ProjectControllerRequestDTO.ProjectCreateRequestDTO dto) {
+        return ResponseEntity.ok(projectService.createProject(dto.getTitle()));
+    }
+
 //    @ApiOperation(value = "소설 수정",
 //            notes = "입력받은 데이터를 기반으로 특정 My 소설을 수정합니다.")
 //    @PutMapping("/{id}")

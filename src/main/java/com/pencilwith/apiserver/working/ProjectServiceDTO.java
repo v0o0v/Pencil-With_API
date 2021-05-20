@@ -1,9 +1,6 @@
 package com.pencilwith.apiserver.working;
 
-import com.pencilwith.apiserver.domain.entity.Chapter;
-import com.pencilwith.apiserver.domain.entity.Project;
-import com.pencilwith.apiserver.domain.entity.ProjectStatus;
-import com.pencilwith.apiserver.domain.entity.User;
+import com.pencilwith.apiserver.domain.entity.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,14 +48,11 @@ public class ProjectServiceDTO {
     public static class ProjectDTO {
 
         private Long projectId;
-
         private String ownerId;
-
         private String title;
-
         private LocalDateTime createdAt;
-
         private List<ChapterDto> chapterList;
+        private ProjectStatus status;
 
         @Builder
         public ProjectDTO(Project project) {
@@ -67,19 +61,28 @@ public class ProjectServiceDTO {
             this.title = project.getTitle();
             this.createdAt = project.getCreatedAt();
             this.chapterList = project.getChapterList().stream().map(ChapterDto::new).collect(Collectors.toList());
+            this.status = project.getStatus();
         }
     }
 
     @Getter
     @Setter
     public static class ChapterDto {
+
         private Long chapterId;
         private String content;
+        private LocalDateTime createAt;
+        private ChapterStatus status;
+        private String title;
+
 
         @Builder
         public ChapterDto(Chapter chapter) {
             this.chapterId = chapter.getId();
             this.content = chapter.getContent();
+            this.createAt = chapter.getCreateAt();
+            this.status = chapter.getStatus();
+            this.title = chapter.getTitle();
         }
     }
 
