@@ -68,6 +68,7 @@ public class DataMaker implements ApplicationRunner {
         project2.setTitle("Project2 🤞✌🎁");
         project2.setOwner(user2);
         project2.setStatus(ProjectStatus.PROGRESS);
+        project2.getCrewList().add(user1);
         this.projectRepository.save(project2);
 
         Project project3 = new Project();

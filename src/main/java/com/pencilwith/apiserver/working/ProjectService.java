@@ -1,4 +1,4 @@
-package com.pencilwith.apiserver.working.service;
+package com.pencilwith.apiserver.working;
 
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
@@ -7,15 +7,12 @@ import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.working.dto.project.ProjectRequest;
 import com.pencilwith.apiserver.working.dto.project.ProjectResponse;
-import com.pencilwith.apiserver.working.dto.project.ProjectTitleResponse;
+import com.pencilwith.apiserver.working.ProjectServiceDTO;
 import com.pencilwith.apiserver.working.mapper.ProjectMapper;
-import com.pencilwith.apiserver.working.mapper.ProjectTitleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +21,9 @@ public class ProjectService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<ProjectTitleResponse> selectAllTitles() {
-        // 현재 사용자의 프로젝트 리스트 조회
+    public ProjectServiceDTO.MyProjectDTO getMyProjectList() {
         User curUser = checkUser();
-
-        List<Project> projects = curUser.getOwnerProjectList();
-        if(projects.isEmpty())
-            throw new BadRequestException("해당 프로젝트들이 존재하지 않습니다.");
-
-        return ProjectTitleMapper.toDto(projects);
+        return new ProjectServiceDTO.MyProjectDTO(curUser);
     }
 
     @Transactional(readOnly = true)
@@ -70,7 +61,7 @@ public class ProjectService {
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
 
         User Owner = project.getOwner();
-        if(Owner.getId().equals(curUser.getId()))
+        if (Owner.getId().equals(curUser.getId()))
             throw new BadRequestException(msg);
 
         return project;
