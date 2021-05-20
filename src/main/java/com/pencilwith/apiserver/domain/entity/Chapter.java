@@ -29,14 +29,14 @@ public class Chapter {
 
     private String title;
 
+    @Enumerated(EnumType.STRING)
     private ChapterStatus status;
 
     @Builder
-    public Chapter(Project project, String content, LocalDateTime createAt, String title, ChapterStatus status) {
+    public Chapter(Project project, LocalDateTime createAt, String title) {
         this.project = project;
-        this.content = content;
         this.createAt = createAt;
         this.title = title;
-        this.status = status;
+        this.status = ChapterStatus.DRAFT;
     }
 }

@@ -2,7 +2,8 @@ package com.pencilwith.apiserver.working;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -12,7 +13,16 @@ public class ProjectControllerRequestDTO {
     @Setter
     public static class ProjectCreateRequestDTO {
 
-        @NonNull
+        @NotEmpty
+        private String title;
+
+    }
+
+    @Getter
+    @Setter
+    public static class ChapterCreateRequestDTO {
+
+        @NotEmpty
         private String title;
 
     }

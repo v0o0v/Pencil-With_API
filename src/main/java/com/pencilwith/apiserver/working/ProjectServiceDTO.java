@@ -51,7 +51,6 @@ public class ProjectServiceDTO {
         private String ownerId;
         private String title;
         private LocalDateTime createdAt;
-        private List<ChapterDto> chapterList;
         private ProjectStatus status;
 
         @Builder
@@ -60,7 +59,6 @@ public class ProjectServiceDTO {
             this.ownerId = project.getOwner().getId();
             this.title = project.getTitle();
             this.createdAt = project.getCreatedAt();
-            this.chapterList = project.getChapterList().stream().map(ChapterDto::new).collect(Collectors.toList());
             this.status = project.getStatus();
         }
     }

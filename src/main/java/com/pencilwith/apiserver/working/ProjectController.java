@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -13,7 +14,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @ApiOperation(value = "나의 프로젝트 리스트 조회",
-                  notes = "나의 프로젝트 리스트와 Crew로 참여중인 프로젝트 리스트를 반환합니다.")
+            notes = "나의 프로젝트 리스트와 Crew로 참여중인 프로젝트 리스트를 반환합니다.")
     @GetMapping("/my")
     public ResponseEntity<?> getMyProjectList() {
         return ResponseEntity.ok(projectService.getMyProjectList());
@@ -27,9 +28,17 @@ public class ProjectController {
 
     @ApiOperation(value = "신규 Project 생성")
     @PostMapping
-    public ResponseEntity<?> createProject(@RequestBody ProjectControllerRequestDTO.ProjectCreateRequestDTO dto) {
+    public ResponseEntity<?> createProject(@Validated @RequestBody ProjectControllerRequestDTO.ProjectCreateRequestDTO dto) {
         return ResponseEntity.ok(projectService.createProject(dto.getTitle()));
     }
+
+    @ApiOperation(value = "신규 Chapter 생성")
+    @PostMapping("/{id}/chapter")
+    public ResponseEntity<?> createChapter(@PathVariable Long id
+            , @Validated @RequestBody ProjectControllerRequestDTO.ChapterCreateRequestDTO dto) {
+        return ResponseEntity.ok(projectService.createChpter(id, dto.getTitle()));
+    }
+
 
 //    @ApiOperation(value = "소설 수정",
 //            notes = "입력받은 데이터를 기반으로 특정 My 소설을 수정합니다.")

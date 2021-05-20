@@ -1,8 +1,10 @@
 package com.pencilwith.apiserver.working;
 
+import com.pencilwith.apiserver.domain.entity.Chapter;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
+import com.pencilwith.apiserver.domain.repository.ChapterRepository;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ChapterRepository chapterRepository;
 
     @Transactional(readOnly = true)
     public ProjectServiceDTO.MyProjectDTO getMyProjectList() {
@@ -46,6 +49,17 @@ public class ProjectService {
         return new ProjectServiceDTO.ProjectDTO(newProject);
     }
 
+    @Transactional
+    public ProjectServiceDTO.ChapterDto createChpter(Long id, String title) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+        Chapter chapter = Chapter.builder().project(project).createAt(LocalDateTime.now()).title(title).build();
+        chapter = this.chapterRepository.save(chapter);
+        project.getChapterList().add(chapter);
+
+        return new ProjectServiceDTO.ChapterDto(chapter);
+    }
+
 //    @Transactional
 //    public ProjectResponse updateProject(Long id, ProjectControllerRequestDTO projectRequest) {
 //        checkProject(id, "해당 프로젝트를 변경할 수 없습니다.");
@@ -72,6 +86,8 @@ public class ProjectService {
 
         return project;
     }
+
+
 
     private User getCurUser() {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
