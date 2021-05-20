@@ -1,6 +1,7 @@
 package com.pencilwith.apiserver.working;
 
 import com.pencilwith.apiserver.domain.entity.Chapter;
+import com.pencilwith.apiserver.domain.entity.ChapterStatus;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
@@ -60,6 +61,26 @@ public class ProjectService {
         return new ProjectServiceDTO.ChapterDto(chapter);
     }
 
+    @Transactional
+    public ProjectServiceDTO.ChapterDto publishChpter(Long projectId, Long chapterId) {
+        Chapter chapter = this.chapterRepository.findById(chapterId)
+                .orElseThrow(() -> new BadRequestException("해당 챕터가 존재하지 않습니다."));
+        chapter.setStatus(ChapterStatus.PUBLISH);
+        chapter = this.chapterRepository.save(chapter);
+
+        return new ProjectServiceDTO.ChapterDto(chapter);
+    }
+
+    @Transactional
+    public ProjectServiceDTO.ChapterDto modifyChapterContent(Long projectId, Long chapterId, String content) {
+        Chapter chapter = this.chapterRepository.findById(chapterId)
+                .orElseThrow(() -> new BadRequestException("해당 챕터가 존재하지 않습니다."));
+        chapter.setContent(content);
+        chapter = this.chapterRepository.save(chapter);
+
+        return new ProjectServiceDTO.ChapterDto(chapter);
+    }
+
 //    @Transactional
 //    public ProjectResponse updateProject(Long id, ProjectControllerRequestDTO projectRequest) {
 //        checkProject(id, "해당 프로젝트를 변경할 수 없습니다.");
@@ -94,4 +115,7 @@ public class ProjectService {
         return userRepository.findById(user.getUsername())
                 .orElseThrow(() -> new BadRequestException("존재하지 않는 사용자입니다."));
     }
+
+
+
 }

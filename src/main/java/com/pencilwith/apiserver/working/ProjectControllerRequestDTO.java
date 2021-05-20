@@ -27,4 +27,13 @@ public class ProjectControllerRequestDTO {
 
     }
 
+    @Getter
+    @Setter
+    public static class ChapterContentModifyRequestDTO {
+
+        @NotEmpty
+        private String content;
+
+    }
+
 }

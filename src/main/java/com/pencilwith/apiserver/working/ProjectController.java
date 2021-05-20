@@ -39,6 +39,24 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.createChpter(id, dto.getTitle()));
     }
 
+    @ApiOperation(value = "Chapter 배포")
+    @PutMapping("/{projectId}/chapter/{chapterId}/publish")
+    public ResponseEntity<?> publishChapter(
+            @PathVariable Long projectId
+            , @PathVariable Long chapterId) {
+        return ResponseEntity.ok(projectService.publishChpter(projectId, chapterId));
+    }
+
+    @ApiOperation(value = "Chapter 컨텐트 수정")
+    @PutMapping("/{projectId}/chapter/{chapterId}/content")
+    public ResponseEntity<?> modifyChapterContent(
+            @PathVariable Long projectId
+            , @PathVariable Long chapterId
+            , @RequestBody ProjectControllerRequestDTO.ChapterContentModifyRequestDTO dto
+    ) {
+        return ResponseEntity.ok(projectService.modifyChapterContent(projectId, chapterId, dto.getContent()));
+    }
+
 
 //    @ApiOperation(value = "소설 수정",
 //            notes = "입력받은 데이터를 기반으로 특정 My 소설을 수정합니다.")
