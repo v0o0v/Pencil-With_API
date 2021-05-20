@@ -52,6 +52,8 @@ public class ProjectServiceDTO {
         private String title;
         private LocalDateTime createdAt;
         private ProjectStatus status;
+        private List<ChapterTitleDto> chapterList;
+
 
         @Builder
         public ProjectDTO(Project project) {
@@ -60,8 +62,30 @@ public class ProjectServiceDTO {
             this.title = project.getTitle();
             this.createdAt = project.getCreatedAt();
             this.status = project.getStatus();
+            this.chapterList = project.getChapterList().stream().map(ChapterTitleDto::new).collect(Collectors.toList());
         }
     }
+
+
+    @Getter
+    @Setter
+    public static class ChapterTitleDto {
+
+        private Long chapterId;
+        private String content;
+        private LocalDateTime createAt;
+        private ChapterStatus status;
+        private String title;
+
+        @Builder
+        public ChapterTitleDto(Chapter chapter) {
+            this.chapterId = chapter.getId();
+            this.createAt = chapter.getCreateAt();
+            this.status = chapter.getStatus();
+            this.title = chapter.getTitle();
+        }
+    }
+
 
     @Getter
     @Setter
@@ -72,7 +96,6 @@ public class ProjectServiceDTO {
         private LocalDateTime createAt;
         private ChapterStatus status;
         private String title;
-
 
         @Builder
         public ChapterDto(Chapter chapter) {
