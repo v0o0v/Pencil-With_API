@@ -1,10 +1,14 @@
 package com.pencilwith.apiserver.working;
 
+import com.pencilwith.apiserver.domain.entity.Chapter;
 import com.pencilwith.apiserver.domain.entity.Project;
+import com.pencilwith.apiserver.domain.entity.ProjectStatus;
 import com.pencilwith.apiserver.domain.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,14 +16,14 @@ public class ProjectServiceDTO {
 
     @Getter
     @Setter
-    public static class ProjectDTO {
+    public static class ProjectTitleDTO {
 
-        private Long id;
+        private Long projectId;
 
         private String title;
 
-        public ProjectDTO(Project project) {
-            this.id = project.getId();
+        public ProjectTitleDTO(Project project) {
+            this.projectId = project.getId();
             this.title = project.getTitle();
         }
     }
@@ -28,15 +32,55 @@ public class ProjectServiceDTO {
     @Setter
     public static class MyProjectDTO {
 
-        private List<ProjectDTO> ownerProjects;
+        private List<ProjectTitleDTO> ownerProjects;
 
-        private List<ProjectDTO> crewProjects;
+        private List<ProjectTitleDTO> crewProjects;
 
         public MyProjectDTO(User user) {
-            this.ownerProjects = user.getOwnerProjectList().stream().map(ProjectDTO::new).collect(Collectors.toList());
-            this.crewProjects = user.getProject().stream().map(ProjectDTO::new).collect(Collectors.toList());
+            this.ownerProjects = user.getOwnerProjectList().stream()
+                    .filter(project -> project.getStatus().equals(ProjectStatus.PROGRESS))
+                    .map(ProjectTitleDTO::new).collect(Collectors.toList());
+            this.crewProjects = user.getProject().stream()
+                    .filter(project -> project.getStatus().equals(ProjectStatus.PROGRESS))
+                    .map(ProjectTitleDTO::new).collect(Collectors.toList());
         }
     }
 
+    @Getter
+    @Setter
+    public static class ProjectDTO {
+
+        private Long projectId;
+
+        private String ownerId;
+
+        private String title;
+
+        private LocalDateTime createdAt;
+
+        private List<ChapterDto> chapterList;
+
+        @Builder
+        public ProjectDTO(Project project) {
+            this.projectId = project.getId();
+            this.ownerId = project.getOwner().getId();
+            this.title = project.getTitle();
+            this.createdAt = project.getCreatedAt();
+            this.chapterList = project.getChapterList().stream().map(ChapterDto::new).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class ChapterDto {
+        private Long chapterId;
+        private String content;
+
+        @Builder
+        public ChapterDto(Chapter chapter) {
+            this.chapterId = chapter.getId();
+            this.content = chapter.getContent();
+        }
+    }
 
 }

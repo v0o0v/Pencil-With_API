@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,12 +22,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getMyProjectList());
     }
 
-//    @ApiOperation(value = "소설 한건 조회",
-//            notes = "My 소설 한 건을 조회합니다.")
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ProjectResponse> getProject(@RequestParam Long id) {
-//        return ResponseEntity.ok(projectService.selectProject(id));
-//    }
+    @ApiOperation(value = "Project 한건 조회")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProject(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProject(id));
+    }
 //
 //    @ApiOperation(value = "소설 발행",
 //            notes = "입력받은 데이터를 기반으로 My 소설을 한 건 발행합니다.")

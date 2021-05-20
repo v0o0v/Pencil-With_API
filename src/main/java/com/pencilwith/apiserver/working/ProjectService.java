@@ -27,11 +27,10 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public ProjectResponse selectProject(Long id) {
-        // 현재 사용자의 프로젝트를 조회함
-        Project project = checkProject(id, "해당 프로젝트를 조회할 수 없습니다.");
-
-        return ProjectMapper.toDto(project);
+    public ProjectServiceDTO.ProjectDTO getProject(Long id) {
+        Project project = this.projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("프로젝트가 존재하지 않습니다."));
+        return new ProjectServiceDTO.ProjectDTO(project);
     }
 
     @Transactional
