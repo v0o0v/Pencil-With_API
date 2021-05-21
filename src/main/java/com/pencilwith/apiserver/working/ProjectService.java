@@ -54,6 +54,9 @@ public class ProjectService {
     public ProjectServiceDTO.ChapterDto createChpter(Long id, String title) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+
+        this.hasRight(project, this.getCurUser());
+
         Chapter chapter = Chapter.builder().project(project).createAt(LocalDateTime.now()).title(title).build();
         chapter = this.chapterRepository.save(chapter);
         project.getChapterList().add(chapter);
@@ -62,7 +65,12 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectServiceDTO.ChapterDto publishChpter(Long projectId, Long chapterId) {
+    public ProjectServiceDTO.ChapterDto publishChapter(Long projectId, Long chapterId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+
+        this.hasRight(project, this.getCurUser());
+
         Chapter chapter = this.chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new BadRequestException("해당 챕터가 존재하지 않습니다."));
         chapter.setStatus(ChapterStatus.PUBLISH);
@@ -73,6 +81,11 @@ public class ProjectService {
 
     @Transactional
     public ProjectServiceDTO.ChapterDto modifyChapterContent(Long projectId, Long chapterId, String content) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+
+        this.hasRight(project, this.getCurUser());
+
         Chapter chapter = this.chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new BadRequestException("해당 챕터가 존재하지 않습니다."));
         chapter.setContent(content);
@@ -95,27 +108,15 @@ public class ProjectService {
 //        projectRepository.deleteById(id);
 //    }
 
-    private Project checkProject(Long id, String msg) {
-        User curUser = getCurUser();
-
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
-
-        User Owner = project.getOwner();
-        if (Owner.getId().equals(curUser.getId()))
-            throw new BadRequestException(msg);
-
-        return project;
+    private void hasRight(Project project, User user) {
+        if(!project.getOwner().getId().equals(user.getId()))
+            throw new BadRequestException("프로젝트의 Owner가 아닙니다.");
     }
-
-
 
     private User getCurUser() {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findById(user.getUsername())
                 .orElseThrow(() -> new BadRequestException("존재하지 않는 사용자입니다."));
     }
-
-
 
 }

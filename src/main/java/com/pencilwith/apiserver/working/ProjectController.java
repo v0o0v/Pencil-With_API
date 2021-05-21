@@ -44,7 +44,7 @@ public class ProjectController {
     public ResponseEntity<?> publishChapter(
             @PathVariable Long projectId
             , @PathVariable Long chapterId) {
-        return ResponseEntity.ok(projectService.publishChpter(projectId, chapterId));
+        return ResponseEntity.ok(projectService.publishChapter(projectId, chapterId));
     }
 
     @ApiOperation(value = "Chapter 컨텐트 수정")
