@@ -22,6 +22,17 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
 
+    private void hasRight(Project project, User user) {
+        if(!project.getOwner().getId().equals(user.getId()))
+            throw new BadRequestException("프로젝트의 Owner가 아닙니다.");
+    }
+
+    private User getCurUser() {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findById(user.getUsername())
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 사용자입니다."));
+    }
+
     @Transactional(readOnly = true)
     public ProjectServiceDTO.MyProjectDTO getMyProjectList() {
         User curUser = getCurUser();
@@ -51,7 +62,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectServiceDTO.ChapterDto createChpter(Long id, String title) {
+    public ProjectServiceDTO.ChapterDto createChapter(Long id, String title) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
 
@@ -108,15 +119,6 @@ public class ProjectService {
 //        projectRepository.deleteById(id);
 //    }
 
-    private void hasRight(Project project, User user) {
-        if(!project.getOwner().getId().equals(user.getId()))
-            throw new BadRequestException("프로젝트의 Owner가 아닙니다.");
-    }
 
-    private User getCurUser() {
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findById(user.getUsername())
-                .orElseThrow(() -> new BadRequestException("존재하지 않는 사용자입니다."));
-    }
 
 }

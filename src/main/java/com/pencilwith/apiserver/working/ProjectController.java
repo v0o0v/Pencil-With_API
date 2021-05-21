@@ -36,7 +36,7 @@ public class ProjectController {
     @PostMapping("/{id}/chapter")
     public ResponseEntity<?> createChapter(@PathVariable Long id
             , @Validated @RequestBody ProjectControllerRequestDTO.ChapterCreateRequestDTO dto) {
-        return ResponseEntity.ok(projectService.createChpter(id, dto.getTitle()));
+        return ResponseEntity.ok(projectService.createChapter(id, dto.getTitle()));
     }
 
     @ApiOperation(value = "Chapter 배포")

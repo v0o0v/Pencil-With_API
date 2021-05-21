@@ -1,10 +1,14 @@
 package com.pencilwith.apiserver.working;
 
 import com.pencilwith.apiserver.domain.entity.*;
+import com.pencilwith.apiserver.start.model.enums.CareerType;
+import com.pencilwith.apiserver.start.model.enums.GenderType;
+import com.pencilwith.apiserver.start.model.enums.LocationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +57,7 @@ public class ProjectServiceDTO {
         private LocalDateTime createdAt;
         private ProjectStatus status;
         private List<ChapterTitleDto> chapterList;
-
+        private List<CrewDTO> crewList;
 
         @Builder
         public ProjectDTO(Project project) {
@@ -63,6 +67,32 @@ public class ProjectServiceDTO {
             this.createdAt = project.getCreatedAt();
             this.status = project.getStatus();
             this.chapterList = project.getChapterList().stream().map(ChapterTitleDto::new).collect(Collectors.toList());
+            this.crewList = project.getCrewList().stream().map(CrewDTO::new).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class CrewDTO {
+
+        private String userId;
+        private String name;
+        private GenderType genderType;
+        private LocalDate birth;
+        private LocationType locationType;
+        private CareerType careerType;
+        private String introduction;
+        private String profileImage;
+
+        public CrewDTO(User user) {
+            this.userId = user.getId();
+            this.name = user.getUsername();
+            this.genderType = user.getGenderType();
+            this.birth = user.getBirth();
+            this.locationType = user.getLocationType();
+            this.careerType = user.getCareerType();
+            this.introduction = user.getIntroduction();
+            this.profileImage = user.getProfileImage();
         }
     }
 
