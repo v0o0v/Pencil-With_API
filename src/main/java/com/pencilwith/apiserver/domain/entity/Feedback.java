@@ -35,18 +35,19 @@ public class Feedback {
     @Lob
     private String content;
 
+    private String soundURL;
+
     @OneToMany(mappedBy = "feedback", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
 
     @Builder
-    public Feedback(Long id, User owner, Project project, LocalDateTime createdAt, String position, String content, List<Reply> replyList) {
-        this.id = id;
+    public Feedback(User owner, Project project, LocalDateTime createdAt, String position, String content, String soundURL) {
         this.owner = owner;
         this.project = project;
         this.createdAt = createdAt;
         this.position = position;
         this.content = content;
-        this.replyList = replyList;
+        this.soundURL = soundURL;
     }
 }

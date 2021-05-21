@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -134,6 +135,58 @@ public class ProjectServiceDTO {
             this.createAt = chapter.getCreateAt();
             this.status = chapter.getStatus();
             this.title = chapter.getTitle();
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class FeedbackDTO {
+
+        private Long feedbackId;
+        private String ownerUserId;
+        private String ownerUserName;
+        private String ownerUserProfileImageURL;
+        private LocalDateTime createdAt;
+        private String position;
+        private String content;
+        private String soundURL;
+        private List<ReplyDTO> replyList;
+
+        @Builder
+        public FeedbackDTO(Feedback feedback) {
+            this.feedbackId = feedback.getId();
+            this.ownerUserId = feedback.getOwner().getId();
+            this.ownerUserName = feedback.getOwner().getUsername();
+            this.ownerUserProfileImageURL = feedback.getOwner().getProfileImage();
+            this.createdAt = feedback.getCreatedAt();
+            this.position = feedback.getPosition();
+            this.content = feedback.getContent();
+            this.soundURL = feedback.getSoundURL();
+            this.replyList = feedback.getReplyList().stream()
+                    .sorted(Comparator.comparing(Reply::getCreatedAt))
+                    .map(ReplyDTO::new).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class ReplyDTO {
+
+        private Long feedbackId;
+        private String ownerUserId;
+        private String ownerUserName;
+        private String ownerUserProfileImageURL;
+        private LocalDateTime createdAt;
+        private String content;
+
+        @Builder
+        public ReplyDTO(Reply reply) {
+            this.feedbackId = reply.getId();
+            this.ownerUserId = reply.getOwner().getId();
+            this.ownerUserName = reply.getOwner().getUsername();
+            this.ownerUserProfileImageURL = reply.getOwner().getProfileImage();
+            this.createdAt = reply.getCreatedAt();
+            this.content = reply.getContent();
         }
     }
 

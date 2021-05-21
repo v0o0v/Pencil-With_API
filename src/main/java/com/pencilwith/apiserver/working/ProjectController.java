@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -58,9 +59,21 @@ public class ProjectController {
     public ResponseEntity<?> modifyChapterContent(
             @PathVariable Long projectId
             , @PathVariable Long chapterId
-            , @RequestBody ProjectControllerRequestDTO.ChapterContentModifyRequestDTO dto
+            , @Validated @RequestBody ProjectControllerRequestDTO.ChapterContentModifyRequestDTO dto
     ) {
         return ResponseEntity.ok(projectService.modifyChapterContent(projectId, chapterId, dto.getContent()));
+    }
+
+    @ApiOperation(value = "신규 Feedback 추가")
+    @PostMapping("/{id}/feedback")
+    public ResponseEntity<?> createFeedback(
+            @PathVariable Long id
+            , @RequestParam String content
+            , @RequestParam String position
+            , @RequestParam(required = false) MultipartFile soundFile
+    ) {
+        return ResponseEntity.ok(projectService.createFeedback(id, content, position, soundFile));
+
     }
 
 }

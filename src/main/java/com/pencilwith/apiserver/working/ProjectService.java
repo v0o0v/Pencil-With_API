@@ -3,12 +3,15 @@ package com.pencilwith.apiserver.working;
 import com.pencilwith.apiserver.domain.entity.*;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
 import com.pencilwith.apiserver.domain.repository.ChapterRepository;
+import com.pencilwith.apiserver.domain.repository.FeedbackRepository;
 import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
+import com.pencilwith.apiserver.util.AWSService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +21,8 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
+    private final AWSService awsService;
+    private final FeedbackRepository feedbackRepository;
 
     private void hasRight(Project project, User user) {
         if(!project.getOwner().getId().equals(user.getId()))
@@ -102,6 +107,7 @@ public class ProjectService {
         return new ProjectServiceDTO.ChapterDto(chapter);
     }
 
+    @Transactional
     public ProjectServiceDTO.ProjectDTO finishProject(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
@@ -112,5 +118,30 @@ public class ProjectService {
         project = this.projectRepository.save(project);
 
         return new ProjectServiceDTO.ProjectDTO(project);
+    }
+
+    @Transactional
+    public ProjectServiceDTO.FeedbackDTO createFeedback(Long id, String content, String position, MultipartFile soundFile) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+
+        User user = this.getCurUser();
+
+        String fileURL = null;
+        if(soundFile!=null)
+            fileURL = this.awsService.upload(soundFile);
+
+        Feedback feedback = Feedback.builder()
+                .createdAt(LocalDateTime.now())
+                .project(project)
+                .content(content)
+                .position(position)
+                .soundURL(fileURL)
+                .owner(user)
+                .build();
+
+        feedback = this.feedbackRepository.save(feedback);
+
+        return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
 }
