@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @ApiOperation(value = "나의 프로젝트 리스트 조회",
-            notes = "나의 프로젝트 리스트와 Crew로 참여중인 프로젝트 리스트를 반환합니다.")
+    @ApiOperation(value = "나의 진행중인 프로젝트 리스트 조회",
+            notes = "나의 프로젝트 리스트와 Crew로 참여중인 프로젝트 리스트를 반환합니다. 진행중인 프로젝트만 반환합니다.")
     @GetMapping("/my")
     public ResponseEntity<?> getMyProjectList() {
         return ResponseEntity.ok(projectService.getMyProjectList());
@@ -30,6 +30,12 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<?> createProject(@Validated @RequestBody ProjectControllerRequestDTO.ProjectCreateRequestDTO dto) {
         return ResponseEntity.ok(projectService.createProject(dto.getTitle()));
+    }
+
+    @ApiOperation(value = "Project 집필 완료 처리")
+    @PutMapping("/{id}/finish")
+    public ResponseEntity<?> finishProject(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.finishProject(id));
     }
 
     @ApiOperation(value = "신규 Chapter 생성")
@@ -56,21 +62,5 @@ public class ProjectController {
     ) {
         return ResponseEntity.ok(projectService.modifyChapterContent(projectId, chapterId, dto.getContent()));
     }
-
-
-//    @ApiOperation(value = "소설 수정",
-//            notes = "입력받은 데이터를 기반으로 특정 My 소설을 수정합니다.")
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ProjectResponse> updateProject(@RequestParam Long id, @RequestBody ProjectRequest projectRequest) {
-//        return ResponseEntity.ok(projectService.updateProject(id, projectRequest));
-//    }
-//
-//    @ApiOperation(value = "소설 삭제",
-//            notes = "특정 My 소설을 삭제합니다.")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteProject(@RequestParam Long id) {
-//        projectService.deleteProject(id);
-//        return ResponseEntity.ok().build();
-//    }
 
 }
