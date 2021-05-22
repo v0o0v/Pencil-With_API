@@ -164,4 +164,19 @@ public class ProjectService {
 
         return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
+
+    @Transactional
+    public ProjectServiceDTO.FeedbackDTO modifyFeedback(Long projectId, Long feedbackId, String content, String position) {
+        Feedback feedback = this.feedbackRepository.findById(feedbackId)
+                .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
+
+        if(content!=null)
+            feedback.setContent(content);
+        if(position!=null)
+            feedback.setPosition(position);
+
+        feedback = this.feedbackRepository.save(feedback);
+
+        return new ProjectServiceDTO.FeedbackDTO(feedback);
+    }
 }

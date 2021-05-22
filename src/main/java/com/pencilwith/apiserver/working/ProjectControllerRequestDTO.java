@@ -36,4 +36,14 @@ public class ProjectControllerRequestDTO {
 
     }
 
+    @Getter
+    @Setter
+    public static class FeedbackModifyRequestDTO {
+
+        private String content;
+
+        private String position;
+
+    }
+
 }

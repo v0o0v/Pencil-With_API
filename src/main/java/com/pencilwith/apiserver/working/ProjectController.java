@@ -82,14 +82,21 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getFeedbackList(id, pageable));
     }
 
-    //feedback 단일 조회
     @ApiOperation(value = "Feedback 단 건 조회")
     @GetMapping("/{projectId}/feedback/{feedbackId}")
     public ResponseEntity<?> getFeedback(@PathVariable Long projectId, @PathVariable Long feedbackId) {
         return ResponseEntity.ok(projectService.getFeedback(projectId, feedbackId));
     }
 
-    //feedback 수정
+    @ApiOperation(value = "Feedback 수정")
+    @PutMapping("/{projectId}/feedback/{feedbackId}")
+    public ResponseEntity<?> modifyFeedback(
+            @PathVariable Long projectId
+            , @PathVariable Long feedbackId
+            , @Validated @RequestBody ProjectControllerRequestDTO.FeedbackModifyRequestDTO dto
+    ) {
+        return ResponseEntity.ok(projectService.modifyFeedback(projectId, feedbackId, dto.getContent(), dto.getPosition()));
+    }
 
     //feedback 삭제
 
