@@ -211,4 +211,16 @@ public class ProjectService {
         this.feedbackRepository.delete(feedback);
     }
 
+    @Transactional
+    public ProjectServiceDTO.FeedbackDTO addReply(Long projectId, Long feedbackId, String content) {
+        Feedback feedback = this.feedbackRepository.findById(feedbackId)
+                .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
+
+        User user = this.getCurUser();
+
+        Reply reply = Reply.builder().owner(user).createdAt(LocalDateTime.now()).content(content).feedback(feedback).build();
+        feedback.getReplyList().add(reply);
+
+        return new ProjectServiceDTO.FeedbackDTO(feedback);
+    }
 }

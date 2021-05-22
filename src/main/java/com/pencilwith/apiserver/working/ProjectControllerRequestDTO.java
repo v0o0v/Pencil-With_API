@@ -46,4 +46,12 @@ public class ProjectControllerRequestDTO {
 
     }
 
+    @Getter
+    @Setter
+    public static class ReplyCreateRequestDTO {
+
+        private String content;
+
+    }
+
 }

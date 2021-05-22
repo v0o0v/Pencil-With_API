@@ -115,10 +115,17 @@ public class ProjectController {
         return ResponseEntity.ok(null);
     }
 
-    //reply 추가
+    @ApiOperation(value = "Reply 추가")
+    @PostMapping("/{projectId}/feedback/{feedbackId}/reply")
+    public ResponseEntity<?> addReply(
+            @PathVariable Long projectId
+            , @PathVariable Long feedbackId
+            , @RequestBody ProjectControllerRequestDTO.ReplyCreateRequestDTO dto
+    ) {
+        return ResponseEntity.ok(projectService.addReply(projectId, feedbackId, dto.getContent()));
+    }
 
     //reply 삭제
-
 
 
     //Crew 제외
