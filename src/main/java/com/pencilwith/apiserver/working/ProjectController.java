@@ -2,6 +2,7 @@ package com.pencilwith.apiserver.working;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -73,7 +74,28 @@ public class ProjectController {
             , @RequestParam(required = false) MultipartFile soundFile
     ) {
         return ResponseEntity.ok(projectService.createFeedback(id, content, position, soundFile));
-
     }
+
+    @ApiOperation(value = "Feedback 리스트 조회", notes = "페이징 형식으로 반환합니다. 정렬은 최신순입니다.")
+    @GetMapping("/{id}/feedback")
+    public ResponseEntity<?> getFeedbackList(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(projectService.getFeedbackList(id, pageable));
+    }
+
+    //feedback 단일 조회
+
+    //feedback 수정
+
+    //feedback 삭제
+
+    //reply 추가
+
+    //reply 삭제
+
+    //Project 삭제
+
+    //Crew 제외
+
+    //Crew 조인
 
 }

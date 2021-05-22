@@ -1,9 +1,7 @@
 package com.pencilwith.apiserver.domain;
 
 import com.pencilwith.apiserver.domain.entity.*;
-import com.pencilwith.apiserver.domain.repository.CrewRecruitRepository;
-import com.pencilwith.apiserver.domain.repository.ProjectRepository;
-import com.pencilwith.apiserver.domain.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.*;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,12 @@ public class DataMaker implements ApplicationRunner {
     @Autowired
     CrewRecruitRepository crewRecruitRepository;
 
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
+    @Autowired
+    ReplyRepository replyRepository;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
@@ -40,28 +44,52 @@ public class DataMaker implements ApplicationRunner {
                 .careerType(CareerType.INTERMEDIATE)
                 .genderType(GenderType.MALE)
                 .build();
-        this.userRepository.save(user1);
+        user1 = this.userRepository.save(user1);
         User user2 = User.builder()
                 .id("user2")
                 .birth(LocalDate.of(2010,2,2))
                 .careerType(CareerType.NEWBIE)
                 .genderType(GenderType.FEMALE)
                 .build();
-        this.userRepository.save(user2);
+        user2 = this.userRepository.save(user2);
         User user3 = User.builder()
                 .id("user3")
                 .birth(LocalDate.of(1950,10,10))
                 .careerType(CareerType.SENIOR)
                 .genderType(GenderType.FEMALE)
                 .build();
-        this.userRepository.save(user3);
+        user3 = this.userRepository.save(user3);
 
         Project project1 = new Project();
         project1.setCreatedAt(LocalDateTime.of(2021,01,01,10,15));
         project1.setTitle("Project1 프로젝트1 😊");
         project1.setOwner(user1);
         project1.setStatus(ProjectStatus.PROGRESS);
-        this.projectRepository.save(project1);
+        project1 = this.projectRepository.save(project1);
+
+        Feedback feedback1 = Feedback.builder()
+                .owner(user1).createdAt(LocalDateTime.of(1900,1,1,1,1)).content("111111")
+                .project(project1).position("1-1").build();
+        Reply reply1 = Reply.builder().owner(user2).createdAt(LocalDateTime.of(1900,1,1,1,1))
+        .content("reply1").feedback(feedback1).build();
+        feedback1.getReplyList().add(reply1);
+        Reply reply2 = Reply.builder().owner(user3).createdAt(LocalDateTime.of(1901,1,1,1,1))
+                .content("reply2").feedback(feedback1).build();
+        feedback1.getReplyList().add(reply2);
+        project1.getFeedbackList().add(feedback1);
+        project1 = this.projectRepository.save(project1);
+
+        Feedback feedback2 = Feedback.builder()
+                .owner(user1).createdAt(LocalDateTime.of(1910,1,1,1,1)).content("222222")
+                .project(project1).position("2-2").build();
+        Reply reply3 = Reply.builder().owner(user2).createdAt(LocalDateTime.of(1900,1,1,1,1))
+                .content("reply3").feedback(feedback2).build();
+        feedback2.getReplyList().add(reply3);
+        Reply reply4 = Reply.builder().owner(user1).createdAt(LocalDateTime.of(1901,1,1,1,1))
+                .content("reply4").feedback(feedback2).build();
+        feedback2.getReplyList().add(reply4);
+        project1.getFeedbackList().add(feedback2);
+        project1 = this.projectRepository.save(project1);
 
         Project project2 = new Project();
         project2.setCreatedAt(LocalDateTime.of(2021,02,02,13,55));
@@ -69,14 +97,14 @@ public class DataMaker implements ApplicationRunner {
         project2.setOwner(user2);
         project2.setStatus(ProjectStatus.PROGRESS);
         project2.getCrewList().add(user1);
-        this.projectRepository.save(project2);
+        project2 = this.projectRepository.save(project2);
 
         Project project3 = new Project();
         project3.setCreatedAt(LocalDateTime.of(2022,02,02,13,55));
         project3.setTitle("Project3 🤞✌🎁");
         project3.setOwner(user3);
         project3.setStatus(ProjectStatus.FINISH);
-        this.projectRepository.save(project3);
+        project3 = this.projectRepository.save(project3);
 
         CrewRecruit crewRecruit1 = CrewRecruit.builder()
                 .owner(user1)
@@ -90,7 +118,7 @@ public class DataMaker implements ApplicationRunner {
                 .project(project1)
                 .crewRecruitState(CrewRecruitState.POST)
                 .build();
-        this.crewRecruitRepository.save(crewRecruit1);
+        crewRecruit1 = this.crewRecruitRepository.save(crewRecruit1);
 
         CrewRecruit crewRecruit2 = CrewRecruit.builder()
                 .owner(user2)
@@ -104,7 +132,7 @@ public class DataMaker implements ApplicationRunner {
                 .project(project2)
                 .crewRecruitState(CrewRecruitState.POST)
                 .build();
-        this.crewRecruitRepository.save(crewRecruit2);
+        crewRecruit2 = this.crewRecruitRepository.save(crewRecruit2);
 
         CrewRecruit crewRecruit3 = CrewRecruit.builder()
                 .owner(user3)
@@ -118,7 +146,7 @@ public class DataMaker implements ApplicationRunner {
                 .project(project3)
                 .crewRecruitState(CrewRecruitState.FINISH)
                 .build();
-        this.crewRecruitRepository.save(crewRecruit3);
+        crewRecruit3 = this.crewRecruitRepository.save(crewRecruit3);
 
     }
 }

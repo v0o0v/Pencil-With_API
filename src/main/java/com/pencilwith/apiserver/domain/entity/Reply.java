@@ -1,10 +1,7 @@
 package com.pencilwith.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,4 +29,12 @@ public class Reply {
     @JoinColumn
     @JsonBackReference
     private Feedback feedback;
+
+    @Builder
+    public Reply(User owner, LocalDateTime createdAt, String content, Feedback feedback) {
+        this.owner = owner;
+        this.createdAt = createdAt;
+        this.content = content;
+        this.feedback = feedback;
+    }
 }

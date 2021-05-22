@@ -172,7 +172,7 @@ public class ProjectServiceDTO {
     @Setter
     public static class ReplyDTO {
 
-        private Long feedbackId;
+        private Long replyId;
         private String ownerUserId;
         private String ownerUserName;
         private String ownerUserProfileImageURL;
@@ -181,7 +181,7 @@ public class ProjectServiceDTO {
 
         @Builder
         public ReplyDTO(Reply reply) {
-            this.feedbackId = reply.getId();
+            this.replyId = reply.getId();
             this.ownerUserId = reply.getOwner().getId();
             this.ownerUserName = reply.getOwner().getUsername();
             this.ownerUserProfileImageURL = reply.getOwner().getProfileImage();

@@ -8,6 +8,8 @@ import com.pencilwith.apiserver.domain.repository.ProjectRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
 import com.pencilwith.apiserver.util.AWSService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,5 +145,14 @@ public class ProjectService {
         feedback = this.feedbackRepository.save(feedback);
 
         return new ProjectServiceDTO.FeedbackDTO(feedback);
+    }
+
+    public Page<ProjectServiceDTO.FeedbackDTO> getFeedbackList(Long id, Pageable pageable) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
+
+        Page<Feedback> feedbacks = this.feedbackRepository.findByProjectOrderByCreatedAtDesc(project, pageable);
+
+        return feedbacks.map(ProjectServiceDTO.FeedbackDTO::new);
     }
 }
