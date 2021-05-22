@@ -26,4 +26,5 @@ public interface CrewRecruitRepository extends JpaRepository<CrewRecruit, Long>,
 
     List<CrewRecruit> findByCreatedAtBeforeAndState(LocalDateTime before, CrewRecruitState crewRecruitState);
 
+    void deleteAllByProject(Project project);
 }

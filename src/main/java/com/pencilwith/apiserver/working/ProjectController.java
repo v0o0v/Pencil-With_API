@@ -28,6 +28,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProject(id));
     }
 
+    @ApiOperation(value = "Project 삭제")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+        projectService.deleteProject(id);
+        return ResponseEntity.ok(null);
+    }
+
     @ApiOperation(value = "신규 Project 생성")
     @PostMapping
     public ResponseEntity<?> createProject(@Validated @RequestBody ProjectControllerRequestDTO.ProjectCreateRequestDTO dto) {
@@ -112,7 +119,7 @@ public class ProjectController {
 
     //reply 삭제
 
-    //Project 삭제
+
 
     //Crew 제외
 

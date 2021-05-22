@@ -2,10 +2,7 @@ package com.pencilwith.apiserver.working;
 
 import com.pencilwith.apiserver.domain.entity.*;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
-import com.pencilwith.apiserver.domain.repository.ChapterRepository;
-import com.pencilwith.apiserver.domain.repository.FeedbackRepository;
-import com.pencilwith.apiserver.domain.repository.ProjectRepository;
-import com.pencilwith.apiserver.domain.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.*;
 import com.pencilwith.apiserver.util.AWSService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +22,7 @@ public class ProjectService {
     private final ChapterRepository chapterRepository;
     private final AWSService awsService;
     private final FeedbackRepository feedbackRepository;
+    private final CrewRecruitRepository crewRecruitRepository;
 
     private void hasRight(Project project, User user) {
         if(!project.getOwner().getId().equals(user.getId()))
@@ -73,6 +71,18 @@ public class ProjectService {
         newProject = projectRepository.save(newProject);
 
         return new ProjectServiceDTO.ProjectDTO(newProject);
+    }
+
+    @Transactional
+    public void deleteProject(Long id) {
+        Project project = this.projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("프로젝트가 존재하지 않습니다."));
+
+        User user = getCurUser();
+        hasRight(project, user);
+
+        this.crewRecruitRepository.deleteAllByProject(project);
+        this.projectRepository.delete(project);
     }
 
     @Transactional
@@ -190,6 +200,7 @@ public class ProjectService {
         return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
 
+    @Transactional
     public void deleteFeedback(Long projectId, Long feedbackId) {
         Feedback feedback = this.feedbackRepository.findById(feedbackId)
                 .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
@@ -199,4 +210,5 @@ public class ProjectService {
 
         this.feedbackRepository.delete(feedback);
     }
+
 }
