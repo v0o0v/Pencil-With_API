@@ -31,6 +31,16 @@ public class ProjectService {
             throw new BadRequestException("프로젝트의 Owner가 아닙니다.");
     }
 
+    private void hasRight(Feedback feedback, User user) {
+        if(!feedback.getOwner().getId().equals(user.getId()))
+            throw new BadRequestException("Feedback의 Owner가 아닙니다.");
+    }
+
+    private void hasRight(Reply reply, User user) {
+        if(!reply.getOwner().getId().equals(user.getId()))
+            throw new BadRequestException("Reply의 Owner가 아닙니다.");
+    }
+
     private User getCurUser() {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findById(user.getUsername())
@@ -178,5 +188,15 @@ public class ProjectService {
         feedback = this.feedbackRepository.save(feedback);
 
         return new ProjectServiceDTO.FeedbackDTO(feedback);
+    }
+
+    public void deleteFeedback(Long projectId, Long feedbackId) {
+        Feedback feedback = this.feedbackRepository.findById(feedbackId)
+                .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
+
+        User user = getCurUser();
+        hasRight(feedback, user);
+
+        this.feedbackRepository.delete(feedback);
     }
 }

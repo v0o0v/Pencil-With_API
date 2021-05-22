@@ -88,7 +88,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getFeedback(projectId, feedbackId));
     }
 
-    @ApiOperation(value = "Feedback 수정")
+    @ApiOperation(value = "Feedback 수정", notes = "특정 속성 값이 null일 경우 수정하지 않습니다.")
     @PutMapping("/{projectId}/feedback/{feedbackId}")
     public ResponseEntity<?> modifyFeedback(
             @PathVariable Long projectId
@@ -98,7 +98,15 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.modifyFeedback(projectId, feedbackId, dto.getContent(), dto.getPosition()));
     }
 
-    //feedback 삭제
+    @ApiOperation(value = "Feedback 삭제")
+    @DeleteMapping("/{projectId}/feedback/{feedbackId}")
+    public ResponseEntity<?> deleteFeedback(
+            @PathVariable Long projectId
+            , @PathVariable Long feedbackId
+    ) {
+        projectService.deleteFeedback(projectId, feedbackId);
+        return ResponseEntity.ok(null);
+    }
 
     //reply 추가
 
