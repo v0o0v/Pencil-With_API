@@ -147,6 +147,7 @@ public class ProjectService {
         return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
 
+    @Transactional(readOnly = true)
     public Page<ProjectServiceDTO.FeedbackDTO> getFeedbackList(Long id, Pageable pageable) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("해당 프로젝트가 존재하지 않습니다."));
@@ -154,5 +155,13 @@ public class ProjectService {
         Page<Feedback> feedbacks = this.feedbackRepository.findByProjectOrderByCreatedAtDesc(project, pageable);
 
         return feedbacks.map(ProjectServiceDTO.FeedbackDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public ProjectServiceDTO.FeedbackDTO getFeedback(Long projectId, Long feedbackId) {
+        Feedback feedback = this.feedbackRepository.findById(feedbackId)
+                .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
+
+        return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
 }

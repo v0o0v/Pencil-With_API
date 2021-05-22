@@ -83,6 +83,11 @@ public class ProjectController {
     }
 
     //feedback 단일 조회
+    @ApiOperation(value = "Feedback 단 건 조회")
+    @GetMapping("/{projectId}/feedback/{feedbackId}")
+    public ResponseEntity<?> getFeedback(@PathVariable Long projectId, @PathVariable Long feedbackId) {
+        return ResponseEntity.ok(projectService.getFeedback(projectId, feedbackId));
+    }
 
     //feedback 수정
 
