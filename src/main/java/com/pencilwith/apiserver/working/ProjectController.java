@@ -125,11 +125,14 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.addReply(projectId, feedbackId, dto.getContent()));
     }
 
-    //reply 삭제
-
-
-    //Crew 제외
-
-    //Crew 조인
+    @ApiOperation(value = "Reply 삭제")
+    @DeleteMapping("/{projectId}/feedback/{feedbackId}/reply/{replyId}")
+    public ResponseEntity<?> deleteReply(
+            @PathVariable Long projectId
+            , @PathVariable Long feedbackId
+            , @PathVariable Long replyId
+    ) {
+        return ResponseEntity.ok(projectService.deleteReply(projectId, feedbackId, replyId));
+    }
 
 }

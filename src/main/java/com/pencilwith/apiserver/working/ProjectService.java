@@ -23,19 +23,20 @@ public class ProjectService {
     private final AWSService awsService;
     private final FeedbackRepository feedbackRepository;
     private final CrewRecruitRepository crewRecruitRepository;
+    private final ReplyRepository replyRepository;
 
     private void hasRight(Project project, User user) {
-        if(!project.getOwner().getId().equals(user.getId()))
+        if (!project.getOwner().getId().equals(user.getId()))
             throw new BadRequestException("프로젝트의 Owner가 아닙니다.");
     }
 
     private void hasRight(Feedback feedback, User user) {
-        if(!feedback.getOwner().getId().equals(user.getId()))
+        if (!feedback.getOwner().getId().equals(user.getId()))
             throw new BadRequestException("Feedback의 Owner가 아닙니다.");
     }
 
     private void hasRight(Reply reply, User user) {
-        if(!reply.getOwner().getId().equals(user.getId()))
+        if (!reply.getOwner().getId().equals(user.getId()))
             throw new BadRequestException("Reply의 Owner가 아닙니다.");
     }
 
@@ -150,7 +151,7 @@ public class ProjectService {
         User user = this.getCurUser();
 
         String fileURL = null;
-        if(soundFile!=null)
+        if (soundFile != null)
             fileURL = this.awsService.upload(soundFile);
 
         Feedback feedback = Feedback.builder()
@@ -190,9 +191,9 @@ public class ProjectService {
         Feedback feedback = this.feedbackRepository.findById(feedbackId)
                 .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
 
-        if(content!=null)
+        if (content != null)
             feedback.setContent(content);
-        if(position!=null)
+        if (position != null)
             feedback.setPosition(position);
 
         feedback = this.feedbackRepository.save(feedback);
@@ -220,6 +221,25 @@ public class ProjectService {
 
         Reply reply = Reply.builder().owner(user).createdAt(LocalDateTime.now()).content(content).feedback(feedback).build();
         feedback.getReplyList().add(reply);
+
+        return new ProjectServiceDTO.FeedbackDTO(feedback);
+    }
+
+    @Transactional
+    public ProjectServiceDTO.FeedbackDTO deleteReply(Long projectId, Long feedbackId, Long replyId) {
+        Reply reply = this.replyRepository.findById(replyId)
+                .orElseThrow(() -> new BadRequestException("해당 Reply가 존재하지 않습니다."));
+
+        if(reply.getFeedback().getId()!=feedbackId)
+            throw new BadRequestException("삭제 요청 한 reply은 해당 feedback에 존재하지 않습니다.");
+
+        User user = this.getCurUser();
+        hasRight(reply, user);
+
+        Feedback feedback = this.feedbackRepository.findById(feedbackId)
+                .orElseThrow(() -> new BadRequestException("해당 피드백이 존재하지 않습니다."));
+        feedback.getReplyList().remove(reply);
+        feedback = this.feedbackRepository.save(feedback);
 
         return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
