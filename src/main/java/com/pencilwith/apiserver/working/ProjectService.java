@@ -75,6 +75,15 @@ public class ProjectService {
     }
 
     @Transactional
+    public ProjectServiceDTO.ProjectDTO modifyProject(Long id, String title) {
+        Project project = this.projectRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("프로젝트가 존재하지 않습니다."));
+        if (title != null)
+            project.setTitle(title);
+        return new ProjectServiceDTO.ProjectDTO(project);
+    }
+
+    @Transactional
     public void deleteProject(Long id) {
         Project project = this.projectRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("프로젝트가 존재하지 않습니다."));
@@ -230,7 +239,7 @@ public class ProjectService {
         Reply reply = this.replyRepository.findById(replyId)
                 .orElseThrow(() -> new BadRequestException("해당 Reply가 존재하지 않습니다."));
 
-        if(reply.getFeedback().getId()!=feedbackId)
+        if (reply.getFeedback().getId() != feedbackId)
             throw new BadRequestException("삭제 요청 한 reply은 해당 feedback에 존재하지 않습니다.");
 
         User user = this.getCurUser();
@@ -243,4 +252,5 @@ public class ProjectService {
 
         return new ProjectServiceDTO.FeedbackDTO(feedback);
     }
+
 }

@@ -28,6 +28,15 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProject(id));
     }
 
+    @ApiOperation(value = "Project 수정")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modifyProject(
+            @PathVariable Long id
+            , @Validated @RequestBody ProjectControllerRequestDTO.ProjectModifyRequestDTO dto
+    ) {
+        return ResponseEntity.ok(projectService.modifyProject(id, dto.getTitle()));
+    }
+
     @ApiOperation(value = "Project 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable Long id) {

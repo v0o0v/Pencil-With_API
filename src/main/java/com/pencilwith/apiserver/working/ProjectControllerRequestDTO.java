@@ -20,6 +20,14 @@ public class ProjectControllerRequestDTO {
 
     @Getter
     @Setter
+    public static class ProjectModifyRequestDTO {
+
+        private String title;
+
+    }
+
+    @Getter
+    @Setter
     public static class ChapterCreateRequestDTO {
 
         @NotEmpty
