@@ -37,6 +37,19 @@ public class MyController {
                 .body(myService.modifyUserInfo(id, modifyUserDTO));
     }
 
+    @ApiOperation(value = "유저 탈퇴"
+            , notes = "유저 데이터 및 관련 프로젝트/ 피드백/ 리플/ 크루/ 크루모집 모두 삭제됩니다.")
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+
+        myService.deleteUser(id);
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
+    }
+
     @ApiOperation(value = "유저 프로필 사진 수정")
     @PutMapping("/user/{id}/profileImage")
     public ResponseEntity<?> modifyUserProfileImage(@PathVariable String id, @RequestParam MultipartFile image) {

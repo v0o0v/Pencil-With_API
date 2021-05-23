@@ -98,6 +98,26 @@ public class DataMaker implements ApplicationRunner {
         project2.setStatus(ProjectStatus.PROGRESS);
         project2.getCrewList().add(user1);
         project2 = this.projectRepository.save(project2);
+        Feedback feedback3 = Feedback.builder()
+                .owner(user1).createdAt(LocalDateTime.of(1910,1,1,1,1)).content("33333333")
+                .project(project2).position("3-2").build();
+        Reply reply5 = Reply.builder().owner(user2).createdAt(LocalDateTime.of(1900,1,1,1,1))
+                .content("reply5").feedback(feedback3).build();
+        feedback3.getReplyList().add(reply5);
+        Reply reply6 = Reply.builder().owner(user1).createdAt(LocalDateTime.of(1901,1,1,1,1))
+                .content("reply6").feedback(feedback3).build();
+        feedback3.getReplyList().add(reply6);
+        Feedback feedback4 = Feedback.builder()
+                .owner(user2).createdAt(LocalDateTime.of(1910,1,1,1,1)).content("44444444")
+                .project(project2).position("4-2").build();
+        Reply reply7 = Reply.builder().owner(user1).createdAt(LocalDateTime.of(1900,1,1,1,1))
+                .content("reply7").feedback(feedback4).build();
+        feedback4.getReplyList().add(reply7);
+        Reply reply8 = Reply.builder().owner(user2).createdAt(LocalDateTime.of(1901,1,1,1,1))
+                .content("reply8").feedback(feedback4).build();
+        feedback4.getReplyList().add(reply8);
+        project2.getFeedbackList().add(feedback4);
+        project2 = this.projectRepository.save(project2);
 
         Project project3 = new Project();
         project3.setCreatedAt(LocalDateTime.of(2022,02,02,13,55));

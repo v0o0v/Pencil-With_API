@@ -5,11 +5,11 @@ import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.ProjectStatus;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.exception.BadRequestException;
-import com.pencilwith.apiserver.domain.repository.ProjectRepository;
-import com.pencilwith.apiserver.domain.repository.UserRepository;
+import com.pencilwith.apiserver.domain.repository.*;
 import com.pencilwith.apiserver.util.AWSService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +23,12 @@ import java.util.stream.Collectors;
 public class MyService {
 
     final UserRepository userRepository;
-
     final AWSService awsService;
-
     final ProjectRepository projectRepository;
+    final FeedbackRepository feedbackRepository;
+    final ReplyRepository replyRepository;
+    final CrewRecruitRepository crewRecruitRepository;
+
 
     @Transactional(readOnly = true)
     public MyDTO.UserDTO getUserInfo(String id) {
@@ -86,5 +88,29 @@ public class MyService {
         project.setStatus(ProjectStatus.PROGRESS);
 
         return this.getFinishedProjects(userId);
+    }
+
+    @Transactional
+    public void deleteUser(String id) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("유저 아이디가 존재하지 않습니다."));
+
+        User curUser = this.getCurUser();
+        if(!curUser.equals(user))
+            throw new BadRequestException("현재 로그인한 사용자와 탈퇴 대상 사용자가 일치하지 않습니다.");
+
+        user.getProject().forEach(project -> project.getCrewList().remove(user));
+        this.crewRecruitRepository.deleteAllByOwner(user);
+        this.projectRepository.deleteAllByOwner(user);
+        this.feedbackRepository.deleteAllByOwner(user);
+        this.replyRepository.deleteAllByOwner(user);
+        this.userRepository.deleteById(user.getId());
+
+    }
+
+    private User getCurUser() {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findById(user.getUsername())
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 사용자입니다."));
     }
 }

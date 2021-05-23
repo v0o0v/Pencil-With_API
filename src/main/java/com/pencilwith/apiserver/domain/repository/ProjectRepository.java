@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    Project findProjectByOwnerId(String id);
-
     List<Project> findByOwnerAndStatus(User owner, ProjectStatus status);
+
+    void deleteAllByOwner(User owner);
 }
