@@ -32,6 +32,19 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+  file:
+    path: ./log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
 server:
   port: 5000
 cloud:
