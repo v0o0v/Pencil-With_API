@@ -1,5 +1,7 @@
 package com.pencilwith.apiserver.crew.util;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -14,14 +16,17 @@ public class TokenMaker {
         byte[] keyBytes = Decoders.BASE64.decode("c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK");
         Key key = Keys.hmacShaKeyFor(keyBytes);
         String authorities = "ROLE_USER, ROLE_ADMIN";
-        Date expiration = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 100000);
+        Date expiration = new Date(9999999999999L);
 
-        System.out.println(Jwts.builder()
+        String jwt = Jwts.builder()
                 .setSubject("user1")
                 .claim("auth", authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(expiration)
-                .compact()
-        );
+                .compact();
+        System.out.println(jwt + "\n");
+
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
+        System.out.println("expiration:" + claimsJws.getBody().getExpiration().toString());
     }
 }
