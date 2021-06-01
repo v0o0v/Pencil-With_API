@@ -59,7 +59,7 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .put("profileImage", "profile 이미지 URI")
                 .put("genderType", "FEMALE")
                 .put("birth", "2000.01.01")
-                .put("locationType", "INCHEON")
+                .put("locationType", "인천")
                 .put("careerType", "INTERMEDIATE")
                 .put("introduction", "자기소개입니다.");
 
@@ -114,7 +114,7 @@ class AuthControllerTest extends IntegrationTestSetup {
                 .put("profileImage", "profile 이미지 URI")
                 .put("genderType", "FEMALE")
                 .put("birth", "2000.01.01")
-                .put("locationType", "INCHEON")
+                .put("locationType", "인천")
                 .put("careerType", "INTERMEDIATE")
                 .put("introduction", "자기소개입니다.");
 
