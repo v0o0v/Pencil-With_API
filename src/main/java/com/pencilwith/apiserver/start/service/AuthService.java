@@ -1,9 +1,13 @@
 package com.pencilwith.apiserver.start.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pencilwith.apiserver.domain.entity.Authority;
 import com.pencilwith.apiserver.domain.entity.User;
 import com.pencilwith.apiserver.domain.entity.UserAgreement;
 import com.pencilwith.apiserver.domain.entity.UserAuthority;
+import com.pencilwith.apiserver.domain.exception.InternalServerErrorException;
 import com.pencilwith.apiserver.domain.repository.AuthorityRepository;
 import com.pencilwith.apiserver.domain.repository.UserAgreementRepository;
 import com.pencilwith.apiserver.domain.repository.UserRepository;
@@ -49,6 +53,8 @@ public class AuthService {
     private final AuthorityRepository authorityRepository;
 
     private final UserAgreementRepository userAgreementRepository;
+
+    private final ObjectMapper objectMapper;
 
     @Value("${spring.security.oauth2.client.registration.google.userinfo-endpoint}")
     protected String googleUserInfoEndpoint;
@@ -96,6 +102,7 @@ public class AuthService {
         return AuthenticationResultDto.builder()
                 .isRegistered(true)
                 .jwtToken("Bearer " + jwtToken)
+                .userId(dto.getUserId())
                 .build();
     }
 
@@ -119,8 +126,7 @@ public class AuthService {
         return AuthenticationResultDto.builder()
                 .isRegistered(false)
                 .accessToken(accessToken)
-                .userAgreement(latestUserAgreement)
-                // TODO: 프로필 이미지 URI 정보 추가 전달 필요
+                .userAgreement(latestUserAgreement)                
                 .build();
     }
 
@@ -133,8 +139,25 @@ public class AuthService {
         HttpEntity entity = new HttpEntity(headers);
 
         String userInfoEndPoint = loginType == LoginType.GOOGLE ? googleUserInfoEndpoint : kakaoUserInfoEndpoint;
+
         UserInfoResponseDto userInfo = restTemplate.exchange(userInfoEndPoint, HttpMethod.GET, entity, UserInfoResponseDto.class).getBody();
         userInfo.setLoginType(loginType.getType());
+
+        String body = restTemplate.exchange(userInfoEndPoint, HttpMethod.GET, entity, String.class).getBody();
+        JsonNode node = null;
+        try {
+            node = this.objectMapper.readTree(body);
+            switch (loginType) {
+                case KAKAO:
+                    userInfo.setProfileImage(node.get("kakao_account").get("profile").get("profile_image_url").asText());
+                    break;
+                case GOOGLE:
+                    userInfo.setProfileImage(node.get("picture").asText());
+                    break;
+            }
+        } catch (JsonProcessingException e) {
+            throw new InternalServerErrorException("토큰을 사용하여 사용자 정보를 불러올 수 없습니다.");
+        }
 
         return userInfo;
     }

@@ -1,6 +1,7 @@
 package com.pencilwith.apiserver.start.model.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pencilwith.apiserver.start.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.start.model.enums.CareerType;
 import com.pencilwith.apiserver.start.model.enums.GenderType;
@@ -18,14 +19,17 @@ public class SignUpRequest {
     @NotNull
     private String accessToken;
 
+    @JsonIgnore
     private String id;
 
+    @JsonIgnore
     private String password;
 
     @NotNull
     @Size(min = 3, max = 10)
     private String username;
 
+    @JsonIgnore
     private String profileImage;
 
     @NotNull
@@ -55,6 +59,7 @@ public class SignUpRequest {
 
         this.id = dto.getLoginType() + dto.getUserId();
         this.password = dto.getUserId();
+        this.profileImage = dto.getProfileImage();
 
         userInfoStorage.remove(this.accessToken);
     }

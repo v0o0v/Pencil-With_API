@@ -15,14 +15,17 @@ public class AuthenticationResultDto {
 
     private String jwtToken;
 
+    private String userId;
+
     public AuthenticationResultDto() {
     }
 
     @Builder
-    public AuthenticationResultDto(boolean isRegistered, String accessToken, UserAgreement userAgreement, String jwtToken) {
+    public AuthenticationResultDto(boolean isRegistered, String accessToken, UserAgreement userAgreement, String jwtToken, String userId) {
         this.isRegistered = isRegistered;
         this.accessToken = accessToken;
         this.userAgreement = userAgreement;
         this.jwtToken = jwtToken;
+        this.userId = userId;
     }
 }
