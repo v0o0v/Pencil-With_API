@@ -8,11 +8,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,14 +32,16 @@ public class TokenProvider {
 
     private final String jwtSecret;
 
-    private final long toeknValidTimeInMilliSeconds;
+    private final long tokenValidTimeInMilliSeconds;
 
     private final Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String jwtSecret,
-                         @Value("${jwt.token-valid-time-in-seconds}") long tokenValidTimeInSeconds) {
+    public TokenProvider(
+            @Value("${jwt.secret}") String jwtSecret
+            , @Value("${jwt.token-valid-time-in-seconds}") long tokenValidTimeInSeconds
+    ) {
         this.jwtSecret = jwtSecret;
-        this.toeknValidTimeInMilliSeconds = tokenValidTimeInSeconds * 1000;
+        this.tokenValidTimeInMilliSeconds = tokenValidTimeInSeconds * 1000;
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -47,7 +51,7 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Date expiration = new Date(new Date().getTime() + this.toeknValidTimeInMilliSeconds);
+        Date expiration = new Date(new Date().getTime() + this.tokenValidTimeInMilliSeconds);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
