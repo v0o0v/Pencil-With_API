@@ -36,7 +36,6 @@ public class SignUpRequest {
     private GenderType genderType;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy.MM.dd")
     private LocalDate birth;
 
     @NotNull
