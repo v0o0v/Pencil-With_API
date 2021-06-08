@@ -43,7 +43,8 @@ public class AWSService {
     }
 
     public String getFileUrl(String fileName) {
-        return String.valueOf(amazonS3Client.getUrl(bucket, fileName));
+//        String url = String.valueOf(amazonS3Client.getUrl(bucket, fileName));
+        return "https://s3.ap-northeast-2.amazonaws.com/com.pencil-with/"+fileName;
     }
 
     private String createFileName(String originalFileName) {
