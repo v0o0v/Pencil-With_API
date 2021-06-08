@@ -1,8 +1,8 @@
 package com.pencilwith.apiserver.start.model.dto;
 
-import com.pencilwith.apiserver.start.model.enums.CareerType;
-import com.pencilwith.apiserver.start.model.enums.GenderType;
-import com.pencilwith.apiserver.start.model.enums.LocationType;
+import com.pencilwith.apiserver.domain.entity.CareerType;
+import com.pencilwith.apiserver.domain.entity.GenderType;
+import com.pencilwith.apiserver.domain.entity.LocationType;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;

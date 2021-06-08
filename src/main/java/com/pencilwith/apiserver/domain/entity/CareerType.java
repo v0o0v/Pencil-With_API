@@ -1,4 +1,4 @@
-package com.pencilwith.apiserver.start.model.enums;
+package com.pencilwith.apiserver.domain.entity;
 
 public enum CareerType {
     NEWBIE, INTERMEDIATE, SENIOR

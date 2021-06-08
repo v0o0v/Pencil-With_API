@@ -1,6 +1,5 @@
 package com.pencilwith.apiserver.domain.entity;
 
-import com.pencilwith.apiserver.start.model.enums.AuthorityType;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

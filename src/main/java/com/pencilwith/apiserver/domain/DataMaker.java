@@ -2,8 +2,8 @@ package com.pencilwith.apiserver.domain;
 
 import com.pencilwith.apiserver.domain.entity.*;
 import com.pencilwith.apiserver.domain.repository.*;
-import com.pencilwith.apiserver.start.model.enums.CareerType;
-import com.pencilwith.apiserver.start.model.enums.GenderType;
+import com.pencilwith.apiserver.domain.entity.CareerType;
+import com.pencilwith.apiserver.domain.entity.GenderType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

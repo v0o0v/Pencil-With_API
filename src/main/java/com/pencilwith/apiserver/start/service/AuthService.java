@@ -15,7 +15,7 @@ import com.pencilwith.apiserver.start.config.jwt.TokenProvider;
 import com.pencilwith.apiserver.start.model.dto.AuthenticationDto;
 import com.pencilwith.apiserver.start.model.dto.AuthenticationResultDto;
 import com.pencilwith.apiserver.start.model.dto.UserInfoResponseDto;
-import com.pencilwith.apiserver.start.model.enums.AuthorityType;
+import com.pencilwith.apiserver.domain.entity.AuthorityType;
 import com.pencilwith.apiserver.start.model.enums.LoginType;
 import com.pencilwith.apiserver.start.model.mapper.UserMapper;
 import com.pencilwith.apiserver.start.model.request.SignUpRequest;

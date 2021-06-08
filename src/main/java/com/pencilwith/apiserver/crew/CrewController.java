@@ -2,8 +2,8 @@ package com.pencilwith.apiserver.crew;
 
 import com.pencilwith.apiserver.domain.entity.CrewRecruitState;
 import com.pencilwith.apiserver.domain.entity.NovelGenre;
-import com.pencilwith.apiserver.start.model.enums.CareerType;
-import com.pencilwith.apiserver.start.model.enums.GenderType;
+import com.pencilwith.apiserver.domain.entity.CareerType;
+import com.pencilwith.apiserver.domain.entity.GenderType;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

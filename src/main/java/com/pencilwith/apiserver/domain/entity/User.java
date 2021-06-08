@@ -2,9 +2,6 @@ package com.pencilwith.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pencilwith.apiserver.start.model.enums.CareerType;
-import com.pencilwith.apiserver.start.model.enums.GenderType;
-import com.pencilwith.apiserver.start.model.enums.LocationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

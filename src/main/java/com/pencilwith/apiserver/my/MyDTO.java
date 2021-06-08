@@ -3,9 +3,9 @@ package com.pencilwith.apiserver.my;
 import com.pencilwith.apiserver.domain.entity.Project;
 import com.pencilwith.apiserver.domain.entity.ProjectStatus;
 import com.pencilwith.apiserver.domain.entity.User;
-import com.pencilwith.apiserver.start.model.enums.CareerType;
-import com.pencilwith.apiserver.start.model.enums.GenderType;
-import com.pencilwith.apiserver.start.model.enums.LocationType;
+import com.pencilwith.apiserver.domain.entity.CareerType;
+import com.pencilwith.apiserver.domain.entity.GenderType;
+import com.pencilwith.apiserver.domain.entity.LocationType;
 import lombok.Getter;
 import lombok.Setter;
 
