@@ -1,17 +1,16 @@
 package com.pencilwith.apiserver.start.model.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pencilwith.apiserver.start.model.dto.UserInfoResponseDto;
 import com.pencilwith.apiserver.domain.entity.CareerType;
 import com.pencilwith.apiserver.domain.entity.GenderType;
 import com.pencilwith.apiserver.domain.entity.LocationType;
-import java.time.LocalDate;
-import java.util.LinkedHashMap;
+import com.pencilwith.apiserver.start.model.dto.UserInfoResponseDto;
+import lombok.Getter;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import lombok.Getter;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
 
 @Getter
 public class SignUpRequest {
